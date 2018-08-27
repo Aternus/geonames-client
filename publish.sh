@@ -35,7 +35,7 @@ git_add_tag() {
 git_push() {
     echo "Pushing changes to the remote repo..."
     cd ${GIT_ROOT}
-    git push
+    git push --prune --tags
 }
 
 ##
