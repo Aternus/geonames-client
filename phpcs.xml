@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Aternus Coding Standard">
+    <description>The coding standard for a library built by Aternus.</description>
+
+    <!-- Command line arguments -->
+    <arg name="report" value="full"/>
+    <arg name="report-width" value="120"/>
+    <arg name="parallel" value="64"/>
+    <arg name="extensions" value="php"/>
+    <arg value="wp"/>
+
+    <!-- Custom php.ini settings -->
+    <ini name="memory_limit" value="512M"/>
+
+    <!-- Files that should be checked -->
+    <file>.</file>
+    <exclude-pattern>./vendor</exclude-pattern>
+    <exclude-pattern>./node_modules</exclude-pattern>
+
+    <!-- Don't hide tokenizer exceptions -->
+    <rule ref="Internal.Tokenizer.Exception">
+        <type>error</type>
+    </rule>
+
+    <!-- Include the whole PSR2 standard -->
+    <rule ref="PSR2"/>
+
+    <!-- Ban some functions -->
+    <rule ref="Generic.PHP.ForbiddenFunctions">
+        <properties>
+            <property name="forbiddenFunctions" type="array">
+                <element key="sizeof" value="count"/>
+                <element key="delete" value="unset"/>
+                <element key="print" value="echo"/>
+                <element key="is_null" value="null"/>
+                <element key="create_function" value="null"/>
+            </property>
+        </properties>
+    </rule>
+
+</ruleset>

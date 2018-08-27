@@ -1,0 +1,5 @@
+.idea/
+vendor/
+composer.lock
+composer.json.bak
+tests/config.json

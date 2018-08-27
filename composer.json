@@ -1,0 +1,68 @@
+{
+  "name": "aternus/geonames-client",
+  "description": "GeoNames API Client",
+  "version": "1.0.0",
+  "type": "library",
+  "keywords": [
+    "geonames",
+    "api",
+    "geographical",
+    "database",
+    "countries",
+    "ISO-3166",
+    "languages",
+    "ISO-639-1"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "aternus:style": "phpcs",
+    "aternus:test": "phpunit --testdox",
+    "aternus:publish": [
+      "@aternus:style",
+      "@aternus:test"
+    ]
+  },
+  "scripts-descriptions": {
+    "aternus:style": "Validate the coding style of the library.",
+    "aternus:test": "Test the code of the library.",
+    "aternus:publish": "Publish the library."
+  },
+  "homepage": "https://github.com/Aternus/geonames-client",
+  "authors": [
+    {
+      "name": "Kiril Reznik",
+      "email": "kiril@atern.us",
+      "homepage": "https://atern.us/"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/Aternus/geonames-client/issues",
+    "source": "https://github.com/Aternus/geonames-client"
+  },
+  "autoload": {
+    "psr-4": {
+      "GeoNames\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "classmap": [
+      "tests"
+    ]
+  },
+  "config": {
+    "preferred-install": "dist",
+    "optimize-autoloader": true
+  },
+  "require": {
+    "php": ">=7.1.0",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-xml": "*",
+    "guzzlehttp/guzzle": "^6.3"
+  },
+  "require-dev": {
+    "ext-xdebug": "*",
+    "phpunit/phpunit": "^7.3",
+    "squizlabs/php_codesniffer": "^3.3"
+  }
+}

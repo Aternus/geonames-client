@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+        bootstrap="vendor/autoload.php"
+        stopOnError="false"
+        stopOnFailure="false"
+        verbose="true"
+>
+    <testsuites>
+        <testsuite name="GeoNames Client">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <!-- Code Coverage -->
+    <filter>
+        <whitelist
+                addUncoveredFilesFromWhitelist="true"
+                processUncoveredFilesFromWhitelist="true"
+        >
+            <directory suffix=".php">tests</directory>
+        </whitelist>
+    </filter>
+</phpunit>
