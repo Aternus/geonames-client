@@ -19,23 +19,18 @@ update_version () {
     fi
 }
 
-git_commit() {
-    echo "Adding files to git and committing changes..."
+git_push() {
+    echo "Adding files to git, committing changes and pushing to remote..."
     cd ${GIT_ROOT}
     git add .
     git commit -m "version ${VERSION}"
+    git push
 }
 
 git_add_tag() {
-    echo "Adding a git tag for the new version..."
+    echo "Adding a git tag for the new version and pushing to remote..."
     cd ${GIT_ROOT}
     git tag -a "${VERSION}" -m "${VERSION}"
-}
-
-git_push() {
-    echo "Pushing changes to the remote repo..."
-    cd ${GIT_ROOT}
-    git push
     git push --prune --tags
 }
 
@@ -43,6 +38,5 @@ git_push() {
 # Run
 ##
 update_version
-git_commit
-git_add_tag
 git_push
+git_add_tag
