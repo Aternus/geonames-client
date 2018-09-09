@@ -139,7 +139,7 @@ class Client
         'findNearestIntersection'    => 'intersection', // US only
         'findNearestIntersectionOSM' => 'intersection',
         'findNearbyPOIsOSM'          => 'poi',
-        'address'                    => false, // doesn't work at the moment
+        'address'                    => 'address',
         'geoCodeAddress'             => 'address',
         'get'                        => false,
         'gtopo30'                    => false,

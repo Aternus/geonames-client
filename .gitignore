@@ -1,5 +1,6 @@
 .idea/
 vendor/
+npm_modules/
 composer.lock
 composer.json.bak
 tests/config.json

@@ -7,7 +7,7 @@
     <arg name="report-width" value="120"/>
     <arg name="parallel" value="64"/>
     <arg name="extensions" value="php"/>
-    <arg value="wp"/>
+    <arg value="wps"/>
 
     <!-- Custom php.ini settings -->
     <ini name="memory_limit" value="512M"/>
@@ -37,5 +37,4 @@
             </property>
         </properties>
     </rule>
-
 </ruleset>
