@@ -15,7 +15,7 @@ update_version () {
     cd ${GIT_ROOT}
     if [[ -n ${VERSION} && -e ${TARGET} ]]; then
         echo "Updating version in ${TARGET} to ${VERSION}"
-        sed -E -i.bak "s|\"version\": \"[1-9]+\.[0-9]+\.[0-9]+\"|\"version\": \"${VERSION}\"|" ${TARGET}
+        sed -E -i.bak "s|\"version\": \"[0-9]+\.[0-9]+\.[0-9]+\"|\"version\": \"${VERSION}\"|" ${TARGET}
     fi
 }
 
