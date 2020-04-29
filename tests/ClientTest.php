@@ -41,7 +41,7 @@ final class ClientTest extends TestCase
     public function testGetSupportedEndpoints()
     {
         $endpoints = $this->client->getSupportedEndpoints();
-        $this->assertInternalType('array', $endpoints);
+        $this->assertIsArray($endpoints);
         $this->assertContains('astergdem', $endpoints);
         $this->assertContains('wikipediaSearch', $endpoints);
     }
@@ -62,7 +62,7 @@ final class ClientTest extends TestCase
         ]);
         $this->assertInstanceOf(\stdClass::class, $obj);
         $this->assertObjectHasAttribute('astergdem', $obj);
-        $this->assertAttributeEquals('45', 'astergdem', $obj);
+        $this->assertEquals('45', $obj->astergdem);
     }
 
     public function testCountryInfo()
@@ -71,11 +71,11 @@ final class ClientTest extends TestCase
             'country' => $this->country,
             'lang'    => 'ru',
         ]);
-        $this->assertInternalType('array', $arr);
+        $this->assertIsArray($arr);
         $this->assertArrayHasKey(0, $arr);
         $obj = $arr[0];
         $this->assertObjectHasAttribute('countryName', $obj);
-        $this->assertAttributeEquals('Израиль', 'countryName', $obj);
+        $this->assertEquals('Израиль', $obj->countryName);
     }
 
     public function testAddress()
@@ -86,9 +86,9 @@ final class ClientTest extends TestCase
         ]);
         $this->assertInstanceOf(\stdClass::class, $obj);
         $this->assertObjectHasAttribute('countryCode', $obj);
-        $this->assertAttributeEquals('US', 'countryCode', $obj);
+        $this->assertEquals('US', $obj->countryCode);
         $this->assertObjectHasAttribute('locality', $obj);
-        $this->assertAttributeEquals('Beverly Hills', 'locality', $obj);
+        $this->assertEquals('Beverly Hills', $obj->locality);
     }
 
     public function testGet()
@@ -99,7 +99,7 @@ final class ClientTest extends TestCase
         ]);
         $this->assertInstanceOf(\stdClass::class, $obj);
         $this->assertObjectHasAttribute('toponymName', $obj);
-        $this->assertAttributeEquals('State of Israel', 'toponymName', $obj);
+        $this->assertEquals('State of Israel', $obj->toponymName);
     }
 
     public function testOcean()
@@ -111,7 +111,7 @@ final class ClientTest extends TestCase
         ]);
         $this->assertInstanceOf(\stdClass::class, $obj);
         $this->assertObjectHasAttribute('name', $obj);
-        $this->assertAttributeEquals('Mediterranean Sea, Eastern Basin', 'name', $obj);
+        $this->assertEquals('Mediterranean Sea, Eastern Basin', $obj->name);
     }
 
     public function testSearch()
@@ -120,11 +120,11 @@ final class ClientTest extends TestCase
             'q'    => '東京都',
             'lang' => 'en',
         ]);
-        $this->assertInternalType('array', $arr);
+        $this->assertIsArray($arr);
         $this->assertArrayHasKey(0, $arr);
         $obj = $arr[0];
         $this->assertObjectHasAttribute('name', $obj);
-        $this->assertAttributeEquals('Tokyo', 'name', $obj);
+        $this->assertEquals('Tokyo', $obj->name);
     }
 
     /*

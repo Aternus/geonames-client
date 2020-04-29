@@ -2,19 +2,18 @@
 
 A [GeoNames](http://www.geonames.org) API Client for PHP.
 
-* [Quick Start](#quick-start)
-* [Why?](#why)
-* [Installation](#installation)
-* [Other Useful Libraries](#other-useful-libraries)
-* [License](#license)
-* [Credits](#credits)
-
+- [Quick Start](#quick-start)
+- [Why?](#why)
+- [Installation](#installation)
+- [Other Useful Libraries](#other-useful-libraries)
+- [License](#license)
+- [Credits](#credits)
 
 ## Quick Start
 
-An overview of available API parameters for each endpoint is 
+An overview of available API parameters for each endpoint is
 [available here](http://www.geonames.org/export/ws-overview.html).
- 
+
 ```php
 <?php
 
@@ -39,7 +38,6 @@ $country_name = $country->countryName;
 $country_languages = $country->languages;
 ```
 
-
 ## Why?
 
 This library will allow you to get better insights into the world.
@@ -50,19 +48,19 @@ on last priority since it was so time consuming and error-prone.
 Getting statistics for each country is a painful process that requires understanding the
 different ISO standards, and even then you're still left to piece the puzzle together yourself.
 
-Luckily, GeoNames have been collecting statistical data about the world for the past 
+Luckily, GeoNames have been collecting statistical data about the world for the past
 few decades and offers that data via their API.
 
-The aim of this library is to provide a single source of truth for 
+The aim of this library is to provide a single source of truth for
 country [(ISO-3166)](https://en.wikipedia.org/wiki/ISO_3166),
 language [(ISO-639-1)](https://en.wikipedia.org/wiki/ISO_639-1),
-and other locale related statistical data, so that other developers can write better software 
+and other locale related statistical data, so that other developers can write better software
 which is up-to-date with the latest changes in the world.
-
 
 ## Installation
 
 If you're using Composer to manage dependencies:
+
 ```
 composer require aternus/geonames-client
 ```
@@ -85,20 +83,17 @@ And in either case, I'd suggest using an alias.
 use GeoNames\Client as GeoNamesClient;
 ```
 
-
 ## Other Useful Libraries
 
 Please make sure to implement some kind of a cache mechanism in order to save yourself
 time, bandwidth and be respectful to GeoNames for providing all that data for free.
 
-If you're making heavy use of the statistical data, you can subscribe to the their 
+If you're making heavy use of the statistical data, you can subscribe to the their
 [Premium Data](http://www.geonames.org/products/premium-data.html) plan.
-
 
 ## License
 
 Released under the MIT License - see `LICENSE.md` for details.
-
 
 ## Credits
 
