@@ -162,6 +162,11 @@ class Client
     ];
 
     /**
+     * @var int|null
+     */
+    protected $lastTotalResultsCount = null;
+
+    /**
      * Constructor.
      *
      * Creates a new GeoNames API Client instance.
@@ -193,6 +198,8 @@ class Client
      */
     public function __call(string $endpoint, array $params = [])
     {
+        $this->lastTotalResultsCount = null;
+
         // check that the endpoint is supported
         if (!in_array($endpoint, $this->getSupportedEndpoints())) {
             throw new \Exception(
@@ -266,14 +273,32 @@ class Client
             );
         }
 
+
+        if ( property_exists( $response_object, 'totalResultsCount' ) ) {
+            $this->lastTotalResultsCount = $response_object->totalResultsCount;
+        }
+
         // return the value of the root property from the response object (if the endpoint supports it)
         $root_property = $this->endpoints[$endpoint];
         if ($root_property !== false && property_exists($response_object, $root_property)
         ) {
+            if ( $this->lastTotalResultsCount === null && is_array($response_object->{$root_property})) {
+                $this->lastTotalResultsCount = count( $response_object->{$root_property} );
+            }
             return $response_object->{$root_property};
         }
 
+        if ( $this->lastTotalResultsCount === null && is_array($response_object)) {
+            $this->lastTotalResultsCount = count( $response_object );
+        }
         return $response_object;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getLastTotalResultsCount() {
+        return $this->lastTotalResultsCount;
     }
 
     /**
