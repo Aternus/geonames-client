@@ -280,17 +280,14 @@ class Client
 
         // return the value of the root property from the response object (if the endpoint supports it)
         $root_property = $this->endpoints[$endpoint];
-        if ($root_property !== false && property_exists($response_object, $root_property)
-        ) {
-            if ($this->lastTotalResultsCount === null && is_array($response_object->{$root_property})) {
-                $this->lastTotalResultsCount = count($response_object->{$root_property});
-            }
-            return $response_object->{$root_property};
+        if ($root_property !== false && property_exists($response_object, $root_property)) {
+	        $response_object = $response_object->{$root_property};
         }
 
         if ($this->lastTotalResultsCount === null && is_array($response_object)) {
             $this->lastTotalResultsCount = count($response_object);
         }
+
         return $response_object;
     }
 
