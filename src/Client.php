@@ -274,7 +274,7 @@ class Client
         }
 
 
-        if ( property_exists( $response_object, 'totalResultsCount' ) ) {
+        if (property_exists($response_object, 'totalResultsCount')) {
             $this->lastTotalResultsCount = $response_object->totalResultsCount;
         }
 
@@ -282,14 +282,14 @@ class Client
         $root_property = $this->endpoints[$endpoint];
         if ($root_property !== false && property_exists($response_object, $root_property)
         ) {
-            if ( $this->lastTotalResultsCount === null && is_array($response_object->{$root_property})) {
-                $this->lastTotalResultsCount = count( $response_object->{$root_property} );
+            if ($this->lastTotalResultsCount === null && is_array($response_object->{$root_property})) {
+                $this->lastTotalResultsCount = count($response_object->{$root_property});
             }
             return $response_object->{$root_property};
         }
 
-        if ( $this->lastTotalResultsCount === null && is_array($response_object)) {
-            $this->lastTotalResultsCount = count( $response_object );
+        if ($this->lastTotalResultsCount === null && is_array($response_object)) {
+            $this->lastTotalResultsCount = count($response_object);
         }
         return $response_object;
     }
@@ -297,7 +297,8 @@ class Client
     /**
      * @return int|null
      */
-    public function getLastTotalResultsCount() {
+    public function getLastTotalResultsCount()
+    {
         return $this->lastTotalResultsCount;
     }
 
