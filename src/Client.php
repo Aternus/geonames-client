@@ -297,7 +297,7 @@ class Client
             }
             if (is_array($value)) {
                 if (empty($value)) {
-                    $query_string[] = $name;
+	                // skip empty arrays
                     continue;
                 }
                 foreach ($value as $key => $item) {
