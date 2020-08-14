@@ -1,7 +1,7 @@
 {
   "name": "aternus/geonames-client",
   "description": "GeoNames API Client",
-  "version": "1.0.10",
+  "version": "2.0.0",
   "type": "library",
   "keywords": [
     "geonames",
@@ -54,15 +54,15 @@
     "optimize-autoloader": true
   },
   "require": {
-    "php": ">=7.1.0",
+    "php": ">=7.2.0",
     "ext-curl": "*",
     "ext-json": "*",
     "ext-xml": "*",
-    "guzzlehttp/guzzle": "^6.3"
+    "guzzlehttp/guzzle": "7.*"
   },
   "require-dev": {
     "ext-xdebug": "*",
-    "phpunit/phpunit": "^7.3",
-    "squizlabs/php_codesniffer": "^3.3"
+    "squizlabs/php_codesniffer": "3.*",
+    "phpunit/phpunit": "8.*"
   }
 }
