@@ -3,6 +3,7 @@
 namespace GeoNames;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException as HttpClientException;
 use GuzzleHttp\Client as HttpClient;
 
 /**
@@ -173,10 +174,8 @@ class Client
      *
      * @link http://www.geonames.org/
      *
-     * @param string $username Required for both Free and Commercial users.
-     * @param string $token    Optional. Commercial users only.
-     *
-     * @return void
+     * @param string      $username Required for both Free and Commercial users.
+     * @param string|null $token    Optional. Commercial users only.
      */
     public function __construct(string $username, string $token = null)
     {
@@ -192,9 +191,10 @@ class Client
      * @param string $endpoint The endpoint to call.
      * @param array  $params   Optional. Parameters to pass to the endpoint.
      *
-     * @throws Exception When an invalid method is called or when the web service returns an error.
-     *
      * @return object \stdClass The response object.
+     * @throws HttpClientException When HttpClient had a fatal failure.
+     *
+     * @throws Exception When an invalid method is called or when the web service returns an error.
      */
     public function __call(string $endpoint, array $params = [])
     {
@@ -337,9 +337,9 @@ class Client
     /**
      * Returns an array of supported endpoints.
      *
+     * @return array An array of endpoints supported.
      * @see $endpoints
      *
-     * @return array An array of endpoints supported.
      */
     public function getSupportedEndpoints()
     {

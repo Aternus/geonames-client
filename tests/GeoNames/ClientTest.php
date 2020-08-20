@@ -1,6 +1,6 @@
 <?php
 
-namespace GeoNames\Tests;
+namespace GeoNames;
 
 use PHPUnit\Framework\TestCase;
 use GeoNames\Client as GeoNamesClient;
@@ -17,7 +17,7 @@ final class ClientTest extends TestCase
     protected $lat = 32.117425; // Israel, Tel Aviv
     protected $lng = 34.831990; // Israel, Tel Aviv
 
-    public function setUp()
+    public function setUp(): void
     {
         $config = json_decode(
             file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'config.json'),
