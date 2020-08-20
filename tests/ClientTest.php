@@ -46,33 +46,34 @@ final class ClientTest extends TestCase
         $this->assertContains('wikipediaSearch', $endpoints);
     }
 
-    public function testGetLastTotalResultsCount()
+    public function testGetLastTotalResultsCountAssertNull()
     {
 
-        $g =& $this->client;
-
-        // make sure we start from scratch
-        $this->setUp();
-
         // check for current value
-        $total = $g->getLastTotalResultsCount();
+        $total = $this->client->getLastTotalResultsCount();
 
         // make sure it's currently null
         $this->assertNull($total);
+    }
 
+    public function testGetLastTotalResultsCountOnLargeResult()
+    {
         // search for a large result
-        $arr = $g->search([
+        $arr = $this->client->search([
             'q'    => '東京都',
             'lang' => 'en',
         ]);
 
-        $total = $g->getLastTotalResultsCount();
+        $total = $this->client->getLastTotalResultsCount();
 
         $this->assertIsInt($total);
         $this->assertGreaterThan(100, $total);
+    }
 
+    public function testGetLastTotalResultsCountOnMediumResult()
+    {
         // search for a couple results
-        $arr = $g->search([
+        $arr = $this->client->search([
             'name_equals'  => 'Grüningen (Stedtli)',
             'country'      => 'CH',
             'featureClass' => 'P',
@@ -83,20 +84,23 @@ final class ClientTest extends TestCase
 
         $count = count($arr);
 
-        $total = $g->getLastTotalResultsCount();
+        $total = $this->client->getLastTotalResultsCount();
 
         $this->assertIsInt($total);
         $this->assertEquals($count, $total);
+    }
 
+    public function testGetLastTotalResultsCountOnNonExistingPlace()
+    {
         // search for a non-existing place
-        $arr = $g->search([
+        $arr = $this->client->search([
             'name_equals'    => 'öalkdjfpaoirhpauhrpgjanfdlijgbiopesrzgpi'
         ]);
 
         $this->assertIsArray($arr);
         $this->assertEmpty($arr);
 
-        $total = $g->getLastTotalResultsCount();
+        $total = $this->client->getLastTotalResultsCount();
 
         $this->assertIsInt($total);
         $this->assertEquals(0, $total);
