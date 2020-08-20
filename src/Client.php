@@ -273,7 +273,6 @@ class Client
             );
         }
 
-
         if (property_exists($response_object, 'totalResultsCount')) {
             $this->lastTotalResultsCount = $response_object->totalResultsCount;
         }

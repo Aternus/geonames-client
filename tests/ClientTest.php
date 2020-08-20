@@ -100,8 +100,6 @@ final class ClientTest extends TestCase
 
         $this->assertIsInt($total);
         $this->assertEquals(0, $total);
-
-        
     }
 
     public function testEndpointError()
@@ -110,7 +108,6 @@ final class ClientTest extends TestCase
         $this->expectExceptionCode($this->client::INVALID_PARAMETER);
         $this->client->astergdem([]);
     }
-
 
     public function testAstergram()
     {
