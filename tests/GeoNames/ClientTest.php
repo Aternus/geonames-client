@@ -48,7 +48,6 @@ final class ClientTest extends TestCase
 
     public function testGetLastTotalResultsCountAssertNull()
     {
-
         // check for current value
         $total = $this->client->getLastTotalResultsCount();
 
