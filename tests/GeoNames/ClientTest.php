@@ -46,15 +46,6 @@ final class ClientTest extends TestCase
         $this->assertContains('wikipediaSearch', $endpoints);
     }
 
-    public function testGetLastTotalResultsCountAssertNull()
-    {
-        // check for current value
-        $total = $this->client->getLastTotalResultsCount();
-
-        // make sure it's currently null
-        $this->assertNull($total);
-    }
-
     public function testGetLastTotalResultsCountWhenResultIsLarge()
     {
         // search for a large result
