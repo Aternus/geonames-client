@@ -55,7 +55,7 @@ final class ClientTest extends TestCase
         $this->assertNull($total);
     }
 
-    public function testGetLastTotalResultsCountOnLargeResult()
+    public function testGetLastTotalResultsCountWhenResultIsLarge()
     {
         // search for a large result
         $arr = $this->client->search([
@@ -69,7 +69,7 @@ final class ClientTest extends TestCase
         $this->assertGreaterThan(100, $total);
     }
 
-    public function testGetLastTotalResultsCountOnMediumResult()
+    public function testGetLastTotalResultsCountWhenResultIsMedium()
     {
         // search for a couple results
         $arr = $this->client->search([
@@ -89,7 +89,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($count, $total);
     }
 
-    public function testGetLastTotalResultsCountOnNonExistingPlace()
+    public function testGetLastTotalResultsCountWhenPlaceDoesntExist()
     {
         // search for a non-existing place
         $arr = $this->client->search([
