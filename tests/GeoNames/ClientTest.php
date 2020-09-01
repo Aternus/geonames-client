@@ -63,10 +63,16 @@ final class ClientTest extends TestCase
             'lang' => 'en',
         ]);
 
+        $this->assertIsArray($arr);
+        $this->assertNotEmpty($arr);
+
+        $count = count($arr);
+
         $total = $this->client->getLastTotalResultsCount();
 
         $this->assertIsInt($total);
         $this->assertGreaterThan(100, $total);
+        $this->assertGreaterThan($count, $total);
     }
 
     public function testGetLastTotalResultsCountWhenResultIsMedium()
