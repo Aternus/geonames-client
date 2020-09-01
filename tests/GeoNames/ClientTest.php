@@ -109,6 +109,7 @@ final class ClientTest extends TestCase
         $this->client->astergdem([]);
     }
 
+
     public function testAstergram()
     {
         $obj = $this->client->astergdem([
