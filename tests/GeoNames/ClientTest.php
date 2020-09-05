@@ -90,7 +90,7 @@ final class ClientTest extends TestCase
     {
         // search for a non-existing place
         $arr = $this->client->search([
-            'name_equals'    => 'öalkdjfpaoirhpauhrpgjanfdlijgbiopesrzgpi'
+            'name_equals' => 'öalkdjfpaoirhpauhrpgjanfdlijgbiopesrzgpi',
         ]);
 
         $this->assertIsArray($arr);
@@ -126,19 +126,19 @@ final class ClientTest extends TestCase
         $qs = $paramsToQueryString($params);
         $this->assertEquals('', $qs);
 
-        $params =['q' => 'foo'];
+        $params = ['q' => 'foo'];
         $qs = $paramsToQueryString($params);
         $this->assertEquals('q=foo', $qs);
 
-        $params =['q' => ['foo', 'bar']];
+        $params = ['q' => ['foo', 'bar']];
         $qs = $paramsToQueryString($params);
         $this->assertEquals('q=foo&q=bar', $qs);
 
-        $params =['name_equals' => 'Grüningen', 'country' => 'CH'];
+        $params = ['name_equals' => 'Grüningen', 'country' => 'CH'];
         $qs = $paramsToQueryString($params);
         $this->assertEquals('name_equals=Gr%C3%BCningen&country=CH', $qs);
 
-        $params =['name_equals' => 'Grüningen', 'country' => ['CH']];
+        $params = ['name_equals' => 'Grüningen', 'country' => ['CH']];
         $qs = $paramsToQueryString($params);
         $this->assertEquals('name_equals=Gr%C3%BCningen&country=CH', $qs);
 
@@ -146,7 +146,7 @@ final class ClientTest extends TestCase
         $this->assertIsArray($arr);
         $this->assertArrayHasKey(0, $arr);
 
-        $params =['name_equals' => 'Grüningen', 'country' => ['CH', 'DE']];
+        $params = ['name_equals' => 'Grüningen', 'country' => ['CH', 'DE']];
         $qs = $paramsToQueryString($params);
         $this->assertEquals('name_equals=Gr%C3%BCningen&country=CH&country=DE', $qs);
 
@@ -154,7 +154,7 @@ final class ClientTest extends TestCase
         $this->assertIsArray($arr);
         $this->assertArrayHasKey(0, $arr);
 
-        $params =['name_equals' => 'Grüningen', 'country' => []];
+        $params = ['name_equals' => 'Grüningen', 'country' => []];
         $qs = $paramsToQueryString($params);
         $this->assertEquals('name_equals=Gr%C3%BCningen', $qs);
 
