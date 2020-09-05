@@ -46,6 +46,62 @@ final class ClientTest extends TestCase
         $this->assertContains('wikipediaSearch', $endpoints);
     }
 
+    public function testGetLastTotalResultsCountWhenResultIsLarge()
+    {
+        // search for a large result
+        $arr = $this->client->search([
+            'q'    => '東京都',
+            'lang' => 'en',
+        ]);
+
+        $this->assertIsArray($arr);
+        $this->assertNotEmpty($arr);
+
+        $count = count($arr);
+
+        $total = $this->client->getLastTotalResultsCount();
+
+        $this->assertIsInt($total);
+        $this->assertGreaterThan(100, $total);
+        $this->assertGreaterThan($count, $total);
+    }
+
+    public function testGetLastTotalResultsCountWhenResultIsMedium()
+    {
+        // search for a couple results
+        $arr = $this->client->search([
+            'name_equals'  => 'Grüningen (Stedtli)',
+            'country'      => 'CH',
+            'featureClass' => 'P',
+        ]);
+
+        $this->assertIsArray($arr);
+        $this->assertNotEmpty($arr);
+
+        $count = count($arr);
+
+        $total = $this->client->getLastTotalResultsCount();
+
+        $this->assertIsInt($total);
+        $this->assertEquals($count, $total);
+    }
+
+    public function testGetLastTotalResultsCountWhenPlaceDoesntExist()
+    {
+        // search for a non-existing place
+        $arr = $this->client->search([
+            'name_equals'    => 'öalkdjfpaoirhpauhrpgjanfdlijgbiopesrzgpi'
+        ]);
+
+        $this->assertIsArray($arr);
+        $this->assertEmpty($arr);
+
+        $total = $this->client->getLastTotalResultsCount();
+
+        $this->assertIsInt($total);
+        $this->assertEquals(0, $total);
+    }
+
     public function testEndpointError()
     {
         $this->expectException(\Exception::class);
