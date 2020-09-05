@@ -296,15 +296,18 @@ class Client
                 continue;
             }
             if (is_array($value)) {
-                // recursion case
-
-                $result_string = $this->paramsToQueryString($value);
-                if (!empty($result_string)) {
-                    $query_string[] = $result_string;
+                if (empty($value)) {
+	                // skip empty arrays
+                    continue;
+                }
+                foreach ($value as $key => $item) {
+                    if (! is_string($key)) {
+                        $key = $name;
+                    }
+                    $item           = (string) $item;
+                    $query_string[] = $key . '=' . rawurlencode($item);
                 }
             } else {
-                // base case
-
                 $value = (string)$value;
                 $query_string[] = $name . '=' . rawurlencode($value);
             }
