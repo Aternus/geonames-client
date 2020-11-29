@@ -168,6 +168,11 @@ class Client
     protected $lastTotalResultsCount = null;
 
     /**
+     * @var string|null
+     */
+    protected $lastUrlRequested = null;
+
+    /**
      * Constructor.
      *
      * Creates a new GeoNames API Client instance.
@@ -199,6 +204,7 @@ class Client
     public function __call(string $endpoint, array $params = [])
     {
         $this->lastTotalResultsCount = null;
+        $this->lastUrlRequested = null;
 
         // check that the endpoint is supported
         if (!in_array($endpoint, $this->getSupportedEndpoints())) {
@@ -248,11 +254,15 @@ class Client
         // build the query string
         $query_string = $this->paramsToQueryString($params);
 
+        $uri = $endpoint . 'JSON?' . $query_string;
+
+        $this->lastUrlRequested = $this->url . '/' . $uri;
+
         // create HttpClient instance
         $HttpClient = new HttpClient($HttpClient_args);
 
         // send GET request
-        $response = $HttpClient->get($endpoint . 'JSON?' . $query_string);
+        $response = $HttpClient->get($uri);
 
         // decode the response body
         $response_object = json_decode((string)$response->getBody());
@@ -308,6 +318,14 @@ class Client
     public function getLastTotalResultsCount()
     {
         return $this->lastTotalResultsCount;
+    }
+
+   /**
+     * @return string|null
+     */
+    public function getLastUrlRequested()
+    {
+        return $this->lastUrlRequested;
     }
 
     /**
