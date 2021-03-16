@@ -251,15 +251,15 @@ class Client
             unset($params['proxy']);
         }
 
+        // create HttpClient instance
+        $HttpClient = new HttpClient($HttpClient_args);
+
         // build the query string
         $query_string = $this->paramsToQueryString($params);
 
         $uri = $endpoint . 'JSON?' . $query_string;
 
         $this->lastUrlRequested = $this->url . '/' . $uri;
-
-        // create HttpClient instance
-        $HttpClient = new HttpClient($HttpClient_args);
 
         // send GET request
         $response = $HttpClient->get($uri);
