@@ -12,6 +12,9 @@ final class ClientTest extends TestCase
      */
     protected $client;
 
+    /** @var array|null */
+    protected $config;
+
     protected $geonameId = '294640'; // Israel
     protected $country = 'IL'; // ISO-3166
     protected $lat = 32.117425; // Israel, Tel Aviv
@@ -19,11 +22,11 @@ final class ClientTest extends TestCase
 
     public function setUp(): void
     {
-        $config = json_decode(
+        $this->config = json_decode(
             file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'config.json'),
             true
         );
-        $this->client = new GeoNamesClient($config['username'], $config['token']);
+        $this->client = new GeoNamesClient($this->config['username'], $this->config['token']);
     }
 
     public function testIsAValidInstanceOfClient()
@@ -100,6 +103,30 @@ final class ClientTest extends TestCase
 
         $this->assertIsInt($total);
         $this->assertEquals(0, $total);
+    }
+
+   public function testGetLastUrlRequested()
+    {
+        // search for a non-existing place
+        $arr = $this->client->search([
+            'q' => 'London',
+        ]);
+
+        static::assertIsArray($arr);
+
+        $lastUrlRequested = $this->client->getLastUrlRequested();
+
+        static::assertIsString($lastUrlRequested);
+
+        $g = $this->client;
+
+        $class = new \ReflectionClass($g);
+        $property = $class->getProperty('url');
+        $property->setAccessible(true);
+
+        $urlExpected = sprintf('%s/searchJSON?q=London&username=%s&token=%s', $property->getValue($g), $this->config['username'], $this->config['token']);
+
+        static::assertEquals($urlExpected, $lastUrlRequested);
     }
 
     public function testEndpointError()
