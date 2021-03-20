@@ -105,7 +105,7 @@ final class ClientTest extends TestCase
         $this->assertEquals(0, $total);
     }
 
-   public function testGetLastUrlRequested()
+    public function testGetLastUrlRequested()
     {
         // search for a non-existing place
         $arr = $this->client->search([
@@ -124,7 +124,12 @@ final class ClientTest extends TestCase
         $property = $class->getProperty('url');
         $property->setAccessible(true);
 
-        $urlExpected = sprintf('%s/searchJSON?q=London&username=%s&token=%s', $property->getValue($g), $this->config['username'], $this->config['token']);
+        $urlExpected = sprintf(
+            '%s/searchJSON?q=London&username=%s&token=%s',
+            $property->getValue($g),
+            $this->config['username'],
+            $this->config['token']
+        );
 
         static::assertEquals($urlExpected, $lastUrlRequested);
     }

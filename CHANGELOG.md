@@ -19,6 +19,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.1.1] - 2021-03-20
+
+### Added
+
+- Add `lastUrlRequested()` method to retrieve the URL used in the most recent request (PR #3)
+
+### Fixed
+
+- Code styling after PR #3
+- Publish script `cd` statement
+
 ## [2.1.0] - 2020-09-05
 
 ### Added
