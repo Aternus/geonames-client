@@ -19,6 +19,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.2.1] - 2021-11-06
+
+### Fixed
+
+- Fixed Unit Tests for `getLastUrlRequested` method
+
+### Security
+
+- Updated dependencies.
+
 ## [2.2.0] - 2021-03-20
 
 ### Fixed

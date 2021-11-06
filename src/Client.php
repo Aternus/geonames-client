@@ -320,7 +320,7 @@ class Client
         return $this->lastTotalResultsCount;
     }
 
-   /**
+    /**
      * @return string|null
      */
     public function getLastUrlRequested()

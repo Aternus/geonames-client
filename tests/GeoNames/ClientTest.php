@@ -112,26 +112,38 @@ final class ClientTest extends TestCase
             'q' => 'London',
         ]);
 
-        static::assertIsArray($arr);
+        $this->assertIsArray($arr);
 
         $lastUrlRequested = $this->client->getLastUrlRequested();
 
-        static::assertIsString($lastUrlRequested);
+        $this->assertIsString($lastUrlRequested);
 
         $g = $this->client;
 
         $class = new \ReflectionClass($g);
-        $property = $class->getProperty('url');
-        $property->setAccessible(true);
 
-        $urlExpected = sprintf(
+        // get url protected property
+        $url_property = $class->getProperty('url');
+        $url_property->setAccessible(true);
+        $url_value = $url_property->getValue($g);
+
+        // get token protected property
+        $token_property = $class->getProperty('token');
+        $token_property->setAccessible(true);
+        $token_value = $token_property->getValue($g);
+
+        $urlExpected = empty($token_value) ? sprintf(
+            '%s/searchJSON?q=London&username=%s',
+            $url_value,
+            $this->config['username']
+        ) : sprintf(
             '%s/searchJSON?q=London&username=%s&token=%s',
-            $property->getValue($g),
+            $url_value,
             $this->config['username'],
             $this->config['token']
         );
 
-        static::assertEquals($urlExpected, $lastUrlRequested);
+        $this->assertEquals($urlExpected, $lastUrlRequested);
     }
 
     public function testEndpointError()
