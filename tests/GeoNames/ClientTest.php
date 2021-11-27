@@ -52,6 +52,7 @@ final class ClientTest extends TestCase
     public function testGetLastTotalResultsCountWhenResultIsLarge()
     {
         // search for a large result
+        // (!) maxRows default is 100
         $arr = $this->client->search([
             'q'    => '東京都',
             'lang' => 'en',
@@ -65,13 +66,13 @@ final class ClientTest extends TestCase
         $total = $this->client->getLastTotalResultsCount();
 
         $this->assertIsInt($total);
-        $this->assertGreaterThan(100, $total);
+        $this->assertEquals(100, $count);
         $this->assertGreaterThan($count, $total);
     }
 
     public function testGetLastTotalResultsCountWhenResultIsMedium()
     {
-        // search for a couple results
+        // search for a couple of results
         $arr = $this->client->search([
             'name_equals'  => 'Grüningen (Stedtli)',
             'country'      => 'CH',
@@ -105,9 +106,44 @@ final class ClientTest extends TestCase
         $this->assertEquals(0, $total);
     }
 
+    public function testGetLastTotalResultsForSingleEntryWhenThereIsNoTotalResultsCount()
+    {
+        $arr = $this->client->weatherIcao([
+            'ICAO' => 'LLBG',
+        ]);
+
+        $total = $this->client->getLastTotalResultsCount();
+
+        $this->assertEquals(null, $total);
+    }
+
+    public function testGetLastTotalResultsForMultipleEntriesWhenThereIsNoTotalResultsCount()
+    {
+        // @see http://bboxfinder.com
+        // Lng/ Lat
+        // (xMin, yMin, xMax, yMax)
+        // (west, south, east, north)
+        $bbox_string = '33.760986,29.391748,35.661621,33.266250';
+        $bbox_arr = array_map('trim', explode(',', $bbox_string));
+        $bbox_params = [
+            'west'  => $bbox_arr[0],
+            'south' => $bbox_arr[1],
+            'east'  => $bbox_arr[2],
+            'north' => $bbox_arr[3],
+        ];
+        $arr = $this->client->weather($bbox_params);
+
+        $this->assertIsArray($arr);
+        $this->assertNotEmpty($arr);
+
+        $count = count($arr);
+        $total = $this->client->getLastTotalResultsCount();
+
+        $this->assertEquals($count, $total);
+    }
+
     public function testGetLastUrlRequested()
     {
-        // search for a non-existing place
         $arr = $this->client->search([
             'q' => 'London',
         ]);

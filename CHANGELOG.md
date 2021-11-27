@@ -19,6 +19,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.2.2] - 2021-11-27
+
+### Added
+
+- Added Unit Tests for `getLastTotalResultsCount` method
+
+### Changed
+
+- Improved the call method
+
+### Fixed
+
+- Fixed typos
+
 ## [2.2.1] - 2021-11-06
 
 ### Fixed

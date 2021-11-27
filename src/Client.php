@@ -59,7 +59,7 @@ use GuzzleHttp\Client as HttpClient;
 class Client
 {
     /**
-     * Exception code defined by this library.
+     * Exception codes defined by this library.
      */
     const UNSUPPORTED_ENDPOINT = 1;
     const JSON_DECODE_ERROR = 2;
@@ -283,20 +283,25 @@ class Client
             );
         }
 
-        if (property_exists($response_object, 'totalResultsCount')) {
-            $this->lastTotalResultsCount = $response_object->totalResultsCount;
-        }
-
         // return the value of the root property from the response object (if the endpoint supports it)
         $root_property = $this->endpoints[$endpoint];
+
+        // root property is defined
         if ($root_property !== false && property_exists($response_object, $root_property)) {
-            $response_object = $response_object->{$root_property};
+            $response_data = $response_object->{$root_property};
+            if (property_exists($response_object, 'totalResultsCount')) {
+                $this->lastTotalResultsCount = $response_object->totalResultsCount;
+            } elseif (is_array($response_data)) {
+                $this->lastTotalResultsCount = count($response_data);
+            }
+            return $response_data;
         }
 
-        if ($this->lastTotalResultsCount === null && is_array($response_object)) {
+        // root property is not defined
+        $this->lastTotalResultsCount = null;
+        if (is_array($response_object)) {
             $this->lastTotalResultsCount = count($response_object);
         }
-
         return $response_object;
     }
 
@@ -331,7 +336,7 @@ class Client
     /**
      * Convert Parameters Array to a Query String.
      *
-     * Escapes values according to RFC 1738.
+     * Escape values according to RFC 1738.
      *
      * @see http://forum.geonames.org/gforum/posts/list/8.page
      * @see rawurlencode()
