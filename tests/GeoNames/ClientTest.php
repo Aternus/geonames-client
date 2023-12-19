@@ -343,4 +343,15 @@ final class ClientTest extends TestCase
         $this->assertEquals('Израиль', $country_name);
         $this->assertEquals('he,ar-IL,en-IL,', $country_languages);
     }
+
+    public function testConnectTimeout()
+    {
+        $g = $this->client;
+
+        $this->assertEquals(0, $g->getConnectTimeout());
+
+        $g->setConnectTimeout(10);
+
+        $this->assertEquals(10, $g->getConnectTimeout());
+    }
 }
