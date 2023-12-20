@@ -382,9 +382,9 @@ class Client
     }
 
     /**
-     * @return float|int
+     * @return float
      */
-    public function getConnectTimeout(): float
+    public function getConnectTimeout()
     {
         return $this->connect_timeout;
     }
@@ -392,7 +392,7 @@ class Client
     /**
      * @param float|int $connect_timeout
      */
-    public function setConnectTimeout($connect_timeout): void
+    public function setConnectTimeout($connect_timeout)
     {
         $this->connect_timeout = (float) $connect_timeout;
     }
