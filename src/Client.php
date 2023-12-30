@@ -87,6 +87,14 @@ class Client
     const MAXROWS_TOO_LARGE = 25;
 
     /**
+     * HTTP Client Connection timeout: (float, default=0) Float describing the number of
+     * seconds to wait while trying to connect to a server. Use 0 to wait
+     * indefinitely (the default behavior).
+     * @var float
+     */
+    protected $connect_timeout = 0;
+
+    /**
      * URL of the GeoNames web service.
      *
      * @var string $url
@@ -235,6 +243,7 @@ class Client
 
         // HttpClient arguments
         $HttpClient_args = [
+            'connect_timeout' => $this->connect_timeout,
             'base_uri' => $this->url,
             // @see https://curl.haxx.se/docs/caextract.html
             'verify'   => __DIR__ . DIRECTORY_SEPARATOR . 'cacert.pem',
@@ -371,4 +380,22 @@ class Client
         }
         return implode('&', $query_string);
     }
+
+    /**
+     * @return float
+     */
+    public function getConnectTimeout()
+    {
+        return $this->connect_timeout;
+    }
+
+    /**
+     * @param float|int $connect_timeout
+     */
+    public function setConnectTimeout($connect_timeout)
+    {
+        $this->connect_timeout = (float) $connect_timeout;
+    }
+
+
 }
