@@ -5,3 +5,4 @@ composer.lock
 composer.json.bak
 tests/**/config.json
 .phpunit.result.cache
+*.env
