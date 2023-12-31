@@ -19,6 +19,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.3.0] - 2023-12-30
+
+### Added
+
+- Added ability to specify connection timeout (PR #8)
+
+### Changed
+
+- Updated cacert.pem
+
 ## [2.2.2] - 2021-11-27
 
 ### Added
