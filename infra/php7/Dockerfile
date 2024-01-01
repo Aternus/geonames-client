@@ -18,6 +18,9 @@ COPY ./infra/php7/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 # PHP config
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
+# entrypoint
+COPY --chmod=700 ./infra/php7/entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["entrypoint.sh"]
+
 VOLUME /usr/src/app
 WORKDIR /usr/src/app
-CMD echo "php7 has started..." && tail -f /dev/null
