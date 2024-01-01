@@ -129,45 +129,45 @@ class Client
      * @var array $endpoints
      */
     protected $endpoints = [
-        'astergdem'                  => false,
-        'children'                   => 'geonames',
-        'cities'                     => 'geonames',
-        'contains'                   => 'geonames',
-        'countryCode'                => false,
-        'countryInfo'                => 'geonames',
-        'countrySubdivision'         => false,
-        'earthquakes'                => 'earthquakes',
-        'findNearby'                 => 'geonames',
-        'findNearbyPlaceName'        => 'geonames',
-        'findNearbyPostalCodes'      => 'postalCodes',
-        'findNearbyStreets'          => 'streetSegment', // US only
-        'findNearbyStreetsOSM'       => 'streetSegment',
-        'findNearByWeather'          => 'weatherObservation',
-        'findNearbyWikipedia'        => 'geonames',
-        'findNearestAddress'         => 'address', // US only
-        'findNearestIntersection'    => 'intersection', // US only
+        'astergdem' => false,
+        'children' => 'geonames',
+        'cities' => 'geonames',
+        'contains' => 'geonames',
+        'countryCode' => false,
+        'countryInfo' => 'geonames',
+        'countrySubdivision' => false,
+        'earthquakes' => 'earthquakes',
+        'findNearby' => 'geonames',
+        'findNearbyPlaceName' => 'geonames',
+        'findNearbyPostalCodes' => 'postalCodes',
+        'findNearbyStreets' => 'streetSegment', // US only
+        'findNearbyStreetsOSM' => 'streetSegment',
+        'findNearByWeather' => 'weatherObservation',
+        'findNearbyWikipedia' => 'geonames',
+        'findNearestAddress' => 'address', // US only
+        'findNearestIntersection' => 'intersection', // US only
         'findNearestIntersectionOSM' => 'intersection',
-        'findNearbyPOIsOSM'          => 'poi',
-        'address'                    => 'address',
-        'geoCodeAddress'             => 'address',
-        'get'                        => false,
-        'gtopo30'                    => false,
-        'hierarchy'                  => 'geonames',
-        'neighbourhood'              => 'neighbourhood', // US only
-        'neighbours'                 => 'geonames',
-        'ocean'                      => 'ocean',
-        'postalCodeCountryInfo'      => 'geonames',
-        'postalCodeLookup'           => 'postalcodes',
-        'postalCodeSearch'           => 'postalCodes', // not a typo
-        'search'                     => 'geonames',
-        'siblings'                   => 'geonames',
-        'srtm1'                      => false,
-        'srtm3'                      => false,
-        'timezone'                   => false,
-        'weather'                    => 'weatherObservations',
-        'weatherIcao'                => 'weatherObservation',
-        'wikipediaBoundingBox'       => 'geonames',
-        'wikipediaSearch'            => 'geonames',
+        'findNearbyPOIsOSM' => 'poi',
+        'address' => 'address',
+        'geoCodeAddress' => 'address',
+        'get' => false,
+        'gtopo30' => false,
+        'hierarchy' => 'geonames',
+        'neighbourhood' => 'neighbourhood', // US only
+        'neighbours' => 'geonames',
+        'ocean' => 'ocean',
+        'postalCodeCountryInfo' => 'geonames',
+        'postalCodeLookup' => 'postalcodes',
+        'postalCodeSearch' => 'postalCodes', // not a typo
+        'search' => 'geonames',
+        'siblings' => 'geonames',
+        'srtm1' => false,
+        'srtm3' => false,
+        'timezone' => false,
+        'weather' => 'weatherObservations',
+        'weatherIcao' => 'weatherObservation',
+        'wikipediaBoundingBox' => 'geonames',
+        'wikipediaSearch' => 'geonames',
     ];
 
     /**
@@ -187,8 +187,8 @@ class Client
      *
      * @link http://www.geonames.org/
      *
-     * @param string      $username Required for both Free and Commercial users.
-     * @param string|null $token    Optional. Commercial users only.
+     * @param string $username Required for both Free and Commercial users.
+     * @param string|null $token Optional. Commercial users only.
      */
     public function __construct(string $username, string $token = null)
     {
@@ -202,7 +202,7 @@ class Client
      * Queries the endpoint using the parameters.
      *
      * @param string $endpoint The endpoint to call.
-     * @param array  $params   Optional. Parameters to pass to the endpoint.
+     * @param array $params Optional. Parameters to pass to the endpoint.
      *
      * @return object \stdClass The response object.
      * @throws HttpClientException When HttpClient had a fatal failure.
@@ -246,7 +246,7 @@ class Client
             'connect_timeout' => $this->connect_timeout,
             'base_uri' => $this->url,
             // @see https://curl.haxx.se/docs/caextract.html
-            'verify'   => __DIR__ . DIRECTORY_SEPARATOR . 'cacert.pem',
+            'verify' => __DIR__ . DIRECTORY_SEPARATOR . 'cacert.pem',
         ];
 
         // handle proxy
@@ -394,8 +394,6 @@ class Client
      */
     public function setConnectTimeout($connect_timeout)
     {
-        $this->connect_timeout = (float) $connect_timeout;
+        $this->connect_timeout = (float)$connect_timeout;
     }
-
-
 }

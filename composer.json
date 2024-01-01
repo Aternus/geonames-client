@@ -16,16 +16,11 @@
   "license": "MIT",
   "scripts": {
     "aternus:style": "phpcs",
-    "aternus:test": "phpunit --testdox",
-    "aternus:publish": [
-      "@aternus:style",
-      "@aternus:test"
-    ]
+    "aternus:test": "phpunit --testdox"
   },
   "scripts-descriptions": {
     "aternus:style": "Validate the coding style of the library.",
-    "aternus:test": "Test the code of the library.",
-    "aternus:publish": "Publish the library."
+    "aternus:test": "Test the code of the library."
   },
   "homepage": "https://github.com/Aternus/geonames-client",
   "authors": [
