@@ -8,22 +8,22 @@ permissions:
   contents: read
 
 jobs:
-  get-supported-php-versions:
-    name: "Get supported PHP Versions"
+  get-php-info:
+    name: "Get PHP Info"
     runs-on: ubuntu-latest
     outputs:
-      extensions: ${{ steps.php-versions-matrix.outputs.extensions }}
-      versions: ${{ steps.php-versions-matrix.outputs.version }}
-      lowest-version: ${{ steps.php-versions-matrix.outputs.lowest }}
+      extensions: ${{ steps.php-info-matrix.outputs.extensions }}
+      versions: ${{ steps.php-info-matrix.outputs.version }}
+      lowest-version: ${{ steps.php-info-matrix.outputs.lowest }}
     steps:
       - uses: actions/checkout@v3
-      - id: php-versions-matrix
+      - id: php-info-matrix
         uses: WyriHaximus/github-action-composer-php-versions-in-range@v1
 
 
   lint:
     needs:
-      - get-supported-php-versions
+      - get-php-info
     name: "Static Code Analysis"
     runs-on: ubuntu-latest
     steps:
@@ -32,8 +32,8 @@ jobs:
       - name: "Setup PHP"
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ fromJson(needs.get-supported-php-versions.outputs.lowest-version) }}
-          extensions: ${{ join(fromJson(needs.get-supported-php-versions.outputs.extensions), ',') }}
+          php-version: ${{ fromJson(needs.get-php-info.outputs.lowest-version) }}
+          extensions: ${{ join(fromJson(needs.get-php-info.outputs.extensions), ',') }}
       - name: "Composer: Validate composer.json and composer.lock"
         run: composer validate --strict
       - name: "Composer: Install dependencies"
@@ -44,12 +44,12 @@ jobs:
 
   test:
     needs:
-      - get-supported-php-versions
+      - get-php-info
     name: "Test"
     uses: "./.github/workflows/shared-test.yml"
     with:
       operating-systems: '["ubuntu-latest"]'
-      php-versions: ${{ needs.get-supported-php-versions.outputs.versions }}
-      php-extensions: ${{ needs.get-supported-php-versions.outputs.extensions }}
+      php-versions: ${{ needs.get-php-info.outputs.versions }}
+      php-extensions: ${{ needs.get-php-info.outputs.extensions }}
     secrets:
       geonames-username: ${{ secrets.GEONAMES_USERNAME }}
