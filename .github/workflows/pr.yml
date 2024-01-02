@@ -29,6 +29,7 @@ jobs:
     with:
       operating-system: ubuntu-latest
       php-version: ${{ needs.get-php-info.outputs.lowest-version }}
+      php-extensions: ${{ needs.get-php-info.outputs.extensions }}
 
 
   test:
