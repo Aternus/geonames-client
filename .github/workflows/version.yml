@@ -20,6 +20,7 @@ jobs:
       - id: php-info-matrix
         uses: WyriHaximus/github-action-composer-php-versions-in-range@v1
 
+
   lint:
     needs:
       - get-php-info

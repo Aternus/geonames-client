@@ -28,7 +28,7 @@ jobs:
         os: ${{ fromJson(inputs.operating-systems) }}
         php: ${{ fromJson(inputs.php-versions) }}
     runs-on: ${{ matrix.os }}
-    name: "Test PHP ${{ matrix.php }} on ${{ matrix.os }}"
+    name: "PHP ${{ matrix.php }} on ${{ matrix.os }}"
     steps:
       - name: "Checkout"
         uses: actions/checkout@v3
