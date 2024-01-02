@@ -1,0 +1,50 @@
+name: "build and test"
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.operating-systems }}
+    strategy:
+      matrix:
+        operating-systems: [ ubuntu-latest ]
+        php-versions: [ "7.2", "8.2" ]
+
+    name: Test PHP ${{ matrix.php-versions }} running on ${{ matrix.operating-systems }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: "Composer: Validate composer.json and composer.lock"
+        run: composer validate --strict
+
+      - name: "Composer: Cache packages"
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ matrix.php-versions }}-
+
+      - name: "Composer: Install dependencies"
+        run: composer install --prefer-source --no-progress --no-suggest --no-interaction
+
+      - name: Validate Code Styling
+        run: composer aternus:style
+
+      - name: Execute Unit Tests
+        run: composer aternus:test
