@@ -24,27 +24,17 @@ jobs:
   lint:
     needs:
       - get-php-info
-    name: "Static Code Analysis"
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Checkout"
-        uses: actions/checkout@v3
-      - name: "Setup PHP"
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ fromJson(needs.get-php-info.outputs.lowest-version) }}
-          extensions: ${{ join(fromJson(needs.get-php-info.outputs.extensions), ',') }}
-      - name: "Composer: Validate composer.json and composer.lock"
-        run: composer validate --strict
-      - name: "Composer: Install dependencies"
-        run: composer install --no-progress --no-interaction
-      - name: "Validate Code Styling"
-        run: composer aternus:style
+    name: "Lint"
+    uses: "./.github/workflows/shared-lint.yml"
+    with:
+      operating-system: ubuntu-latest
+      php-version: ${{ needs.get-php-info.outputs.lowest-version }}
 
 
   test:
     needs:
       - get-php-info
+      - lint
     name: "Test"
     uses: "./.github/workflows/shared-test.yml"
     with:
