@@ -2,6 +2,7 @@
 
 namespace GeoNames;
 
+use stdClass;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException as HttpClientException;
 use GuzzleHttp\Client as HttpClient;
@@ -12,45 +13,45 @@ use GuzzleHttp\Client as HttpClient;
  * @link http://www.geonames.org/export/ws-overview.html
  * @link http://www.geonames.org/export/web-services.html
  *
- * @method \stdClass astergdem(array $params) Elevation - Aster Global Digital Elevation Model V2 2011.
+ * @method stdClass astergdem(array $params) Elevation - Aster Global Digital Elevation Model V2 2011.
  * @method array     children(array $params)
  * @method array     cities(array $params)
  * @method array     contains(array $params)
- * @method \stdClass countryCode(array $params)
+ * @method stdClass countryCode(array $params)
  * @method array     countryInfo(array $params) Country Info
- * @method \stdClass countrySubdivision(array $params)
+ * @method stdClass countrySubdivision(array $params)
  * @method array     earthquakes(array $params)
  * @method array     findNearby(array $params)
  * @method array     findNearbyPlaceName(array $params)
  * @method array     findNearbyPostalCodes(array $params)
  * @method array     findNearbyStreets(array $params)
  * @method array     findNearbyStreetsOSM(array $params)
- * @method \stdClass findNearByWeather(array $params)
+ * @method stdClass findNearByWeather(array $params)
  * @method array     findNearbyWikipedia(array $params)
- * @method \stdClass findNearestAddress(array $params)
- * @method \stdClass findNearestIntersection(array $params)
- * @method \stdClass findNearestIntersectionOSM(array $params)
+ * @method stdClass findNearestAddress(array $params)
+ * @method stdClass findNearestIntersection(array $params)
+ * @method stdClass findNearestIntersectionOSM(array $params)
  * @method array     findNearbyPOIsOSM(array $params)
- * @method \stdClass address(array $params)
- * @method \stdClass geoCodeAddress(array $params)
- * @method \stdClass get(array $params)
- * @method \stdClass gtopo30(array $params) Elevation - GTOPO30 is a global digital elevation model (DEM)
+ * @method stdClass address(array $params)
+ * @method stdClass geoCodeAddress(array $params)
+ * @method stdClass get(array $params)
+ * @method stdClass gtopo30(array $params) Elevation - GTOPO30 is a global digital elevation model (DEM)
  *                                                      with a horizontal grid spacing of 30 arc seconds.
  *
  * @method array     hierarchy(array $params)
- * @method \stdClass neighbourhood(array $params)
+ * @method stdClass neighbourhood(array $params)
  * @method array     neighbours(array $params)
- * @method \stdClass ocean(array $params)
+ * @method stdClass ocean(array $params)
  * @method array     postalCodeCountryInfo(array $params)
  * @method array     postalCodeLookup(array $params)
  * @method array     postalCodeSearch(array $params)
  * @method array     search(array $params)
  * @method array     siblings(array $params)
- * @method \stdClass srtm1(array $params) Elevation - SRTM1 (Shuttle Radar Topography Mission).
- * @method \stdClass srtm3(array $params) Elevation - SRTM3 (Shuttle Radar Topography Mission).
- * @method \stdClass timezone(array $params)
+ * @method stdClass srtm1(array $params) Elevation - SRTM1 (Shuttle Radar Topography Mission).
+ * @method stdClass srtm3(array $params) Elevation - SRTM3 (Shuttle Radar Topography Mission).
+ * @method stdClass timezone(array $params)
  * @method array     weather(array $params)
- * @method \stdClass weatherIcao(array $params) Most recent weather observation using
+ * @method stdClass weatherIcao(array $params) Most recent weather observation using
  *                                              International Civil Aviation Organization (ICAO) code.
  *
  * @method array     wikipediaBoundingBox(array $params)
@@ -61,30 +62,30 @@ class Client
     /**
      * Exception codes defined by this library.
      */
-    const UNSUPPORTED_ENDPOINT = 1;
-    const JSON_DECODE_ERROR = 2;
+    public const UNSUPPORTED_ENDPOINT = 1;
+    public const JSON_DECODE_ERROR = 2;
 
     /**
      * Exception codes defined by the web service.
      *
      * @see http://www.geonames.org/export/webservice-exception.html
      */
-    const AUTHORIZATION_EXCEPTION = 10;
-    const RECORD_DOES_NOT_EXIST = 11;
-    const OTHER_ERROR = 12;
-    const DATABASE_TIMEOUT = 13;
-    const INVALID_PARAMETER = 14;
-    const NO_RESULT_FOUND = 15;
-    const DUPLICATE_EXCEPTION = 16;
-    const POSTAL_CODE_NOT_FOUND = 17;
-    const DAILY_LIMIT_OF_CREDITS_EXCEEDED = 18;
-    const HOURLY_LIMIT_OF_CREDITS_EXCEEDED = 19;
-    const WEEKLY_LIMIT_OF_CREDITS_EXCEEDED = 20;
-    const INVALID_INPUT = 21;
-    const SERVER_OVERLOADED_EXCEPTION = 22;
-    const SERVICE_NOT_IMPLEMENTED = 23;
-    const RADIUS_TOO_LARGE = 24;
-    const MAXROWS_TOO_LARGE = 25;
+    public const AUTHORIZATION_EXCEPTION = 10;
+    public const RECORD_DOES_NOT_EXIST = 11;
+    public const OTHER_ERROR = 12;
+    public const DATABASE_TIMEOUT = 13;
+    public const INVALID_PARAMETER = 14;
+    public const NO_RESULT_FOUND = 15;
+    public const DUPLICATE_EXCEPTION = 16;
+    public const POSTAL_CODE_NOT_FOUND = 17;
+    public const DAILY_LIMIT_OF_CREDITS_EXCEEDED = 18;
+    public const HOURLY_LIMIT_OF_CREDITS_EXCEEDED = 19;
+    public const WEEKLY_LIMIT_OF_CREDITS_EXCEEDED = 20;
+    public const INVALID_INPUT = 21;
+    public const SERVER_OVERLOADED_EXCEPTION = 22;
+    public const SERVICE_NOT_IMPLEMENTED = 23;
+    public const RADIUS_TOO_LARGE = 24;
+    public const MAXROWS_TOO_LARGE = 25;
 
     /**
      * HTTP Client connection timeout.
@@ -218,7 +219,7 @@ class Client
 
         // check that the endpoint is supported
         if (!in_array($endpoint, $this->getSupportedEndpoints())) {
-            throw new \Exception(
+            throw new Exception(
                 "Unsupported endpoint: {$endpoint}",
                 self::UNSUPPORTED_ENDPOINT
             );
@@ -280,7 +281,7 @@ class Client
 
         // check that json_decode() worked correctly
         if (!is_object($response_object)) {
-            throw new \Exception(
+            throw new Exception(
                 "Could not JSON decode the response body.",
                 self::JSON_DECODE_ERROR
             );
@@ -288,7 +289,7 @@ class Client
 
         // check for errors in response
         if (isset($response_object->status->message, $response_object->status->value)) {
-            throw new \Exception(
+            throw new Exception(
                 $response_object->status->message,
                 (int)$response_object->status->value
             );
