@@ -6,6 +6,9 @@ log() {
     echo -e "${GREEN}→ $*${NC}"
 }
 
+log "cleaning up..."
+rm .phpunit.result.cache
+
 log "setting up composer..."
 rm -rf /usr/src/app/vendor
 rm -rf /usr/src/app/composer.lock
