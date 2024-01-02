@@ -41,7 +41,7 @@ jobs:
     name: "Test"
     uses: "./.github/workflows/shared-test.yml"
     with:
-      operating-systems: '["ubuntu-latest"]'
+      operating-systems: '["ubuntu-latest", "macos-latest", "windows-latest"]'
       php-versions: ${{ needs.get-php-info.outputs.versions }}
       php-extensions: ${{ needs.get-php-info.outputs.extensions }}
     secrets:
