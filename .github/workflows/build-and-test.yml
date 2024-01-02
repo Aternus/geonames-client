@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   get-supported-php-versions:
-    name: Get supported PHP Versions
+    name: "Get supported PHP Versions"
     runs-on: ubuntu-latest
     outputs:
       extensions: ${{ steps.php-versions-matrix.outputs.extensions }}
@@ -29,15 +29,16 @@ jobs:
         operating-system: [ ubuntu-latest ]
         php-version: ${{ fromJson(needs.get-supported-php-versions.outputs.version) }}
     runs-on: ${{ matrix.operating-system }}
-    name: Test PHP ${{ matrix.php-version }} running on ${{ matrix.operating-system }}
+    name: "Test PHP ${{ matrix.php-version }} running on ${{ matrix.operating-system }}"
     steps:
-      - name: Checkout
+      - name: "Checkout"
         uses: actions/checkout@v3
 
-      - name: Setup PHP
+      - name: "Setup PHP"
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
+          extensions: ${{ join(fromJson(needs.get-supported-php-versions.outputs.extensions), ',') }}
 
       - name: "Composer: Validate composer.json and composer.lock"
         run: composer validate --strict
@@ -54,8 +55,8 @@ jobs:
       - name: "Composer: Install dependencies"
         run: composer install --no-progress --no-interaction
 
-      - name: Validate Code Styling
+      - name: "Validate Code Styling"
         run: composer aternus:style
 
-      - name: Execute Unit Tests
+      - name: "Execute Unit Tests"
         run: composer aternus:test
