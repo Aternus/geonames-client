@@ -22,6 +22,7 @@ jobs:
         uses: WyriHaximus/github-action-composer-php-versions-in-range@v1
 
   build-and-test:
+    environment: staging
     env:
       GEONAMES_USERNAME: ${{ secrets.GEONAMES_USERNAME }}
     needs:
