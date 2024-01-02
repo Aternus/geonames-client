@@ -43,7 +43,6 @@ jobs:
 
 
   test:
-    environment: staging
     env:
       GEONAMES_USERNAME: ${{ secrets.GEONAMES_USERNAME }}
     needs:
