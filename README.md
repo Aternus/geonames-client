@@ -2,6 +2,13 @@
 
 A [GeoNames](http://www.geonames.org) API Client for PHP.
 
+[![validate](https://github.com/Aternus/geonames-client/actions/workflows/validate.yml/badge.svg)](https://github.com/Aternus/geonames-client/actions/workflows/validate.yml)
+
+Install with confidence 🛡️
+
+* Supported OS: Linux, macOS and Windows.
+* Supported PHP versions: 7.2 and up.
+
 - [Quick Start](#quick-start)
 - [Why?](#why)
 - [Installation](#installation)
