@@ -22,8 +22,8 @@
         <type>error</type>
     </rule>
 
-    <!-- Include the whole PSR2 standard -->
-    <rule ref="PSR2"/>
+    <!-- Include the whole PSR-12 standard -->
+    <rule ref="PSR12"/>
 
     <!-- Ban some functions -->
     <rule ref="Generic.PHP.ForbiddenFunctions">

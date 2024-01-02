@@ -22,10 +22,10 @@ final class ClientTest extends TestCase
 
     public function setUp(): void
     {
-        $this->config = json_decode(
-            file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'config.json'),
-            true
-        );
+        $this->config = [
+            'username' => getenv('GEONAMES_USERNAME'),
+            'token' => getenv('GEONAMES_TOKEN')
+        ];
         $this->client = new GeoNamesClient($this->config['username'], $this->config['token']);
     }
 
@@ -54,7 +54,7 @@ final class ClientTest extends TestCase
         // search for a large result
         // (!) maxRows default is 100
         $arr = $this->client->search([
-            'q'    => '東京都',
+            'q' => '東京都',
             'lang' => 'en',
         ]);
 
@@ -74,8 +74,8 @@ final class ClientTest extends TestCase
     {
         // search for a couple of results
         $arr = $this->client->search([
-            'name_equals'  => 'Grüningen (Stedtli)',
-            'country'      => 'CH',
+            'name_equals' => 'Grüningen (Stedtli)',
+            'country' => 'CH',
             'featureClass' => 'P',
         ]);
 
@@ -126,9 +126,9 @@ final class ClientTest extends TestCase
         $bbox_string = '33.760986,29.391748,35.661621,33.266250';
         $bbox_arr = array_map('trim', explode(',', $bbox_string));
         $bbox_params = [
-            'west'  => $bbox_arr[0],
+            'west' => $bbox_arr[0],
             'south' => $bbox_arr[1],
-            'east'  => $bbox_arr[2],
+            'east' => $bbox_arr[2],
             'north' => $bbox_arr[3],
         ];
         $arr = $this->client->weather($bbox_params);
@@ -258,7 +258,7 @@ final class ClientTest extends TestCase
     {
         $arr = $this->client->countryInfo([
             'country' => $this->country,
-            'lang'    => 'ru',
+            'lang' => 'ru',
         ]);
         $this->assertIsArray($arr);
         $this->assertArrayHasKey(0, $arr);
@@ -284,7 +284,7 @@ final class ClientTest extends TestCase
     {
         $obj = $this->client->get([
             'geonameId' => $this->geonameId,
-            'lang'      => 'en',
+            'lang' => 'en',
         ]);
         $this->assertInstanceOf(\stdClass::class, $obj);
         $this->assertObjectHasAttribute('toponymName', $obj);
@@ -294,8 +294,8 @@ final class ClientTest extends TestCase
     public function testOcean()
     {
         $obj = $this->client->ocean([
-            'lat'    => $this->lat,
-            'lng'    => $this->lng,
+            'lat' => $this->lat,
+            'lng' => $this->lng,
             'radius' => 10,
         ]);
         $this->assertInstanceOf(\stdClass::class, $obj);
@@ -306,7 +306,7 @@ final class ClientTest extends TestCase
     public function testSearch()
     {
         $arr = $this->client->search([
-            'q'    => '東京都',
+            'q' => '東京都',
             'lang' => 'en',
         ]);
         $this->assertIsArray($arr);
@@ -330,7 +330,7 @@ final class ClientTest extends TestCase
         // note that I'm using the array destructor introduced in PHP 7.1
         [$country] = $g->countryInfo([
             'country' => 'IL',
-            'lang'    => 'ru', // display info in Russian
+            'lang' => 'ru', // display info in Russian
         ]);
 
         // country name (in Russian)

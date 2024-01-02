@@ -21,7 +21,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.3.1] - 2024-01-03
 
-- Test
+### Added
+
+- Dockerized the project
+- Dockerized code styling and unit tests
+- Added GitHub workflows
+
+### Changed
+
+- Aligned with PSR-12
+- Updated .gitignore
+- Removed composer.json version field in favour of VCS tags
+
+### Fixed
+
+- Fixed PHP 7.2 syntax
+- Fixed documentation
 
 ## [2.3.0] - 2023-12-30
 

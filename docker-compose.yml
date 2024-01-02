@@ -1,0 +1,20 @@
+version: '3.8'
+
+name: geonames-client
+
+services:
+  php7:
+    build:
+      dockerfile: ./infra/php7/Dockerfile
+    env_file:
+      - ./.development.env
+    volumes:
+      - .:/usr/src/app
+
+  php8:
+    build:
+      dockerfile: ./infra/php8/Dockerfile
+    env_file:
+      - ./.development.env
+    volumes:
+      - .:/usr/src/app

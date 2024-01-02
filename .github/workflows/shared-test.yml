@@ -1,0 +1,49 @@
+name: "test"
+
+on:
+  workflow_call:
+    inputs:
+      operating-systems:
+        type: string
+        required: true
+        description: "JSON array of operating systems to test on"
+      php-versions:
+        type: string
+        required: true
+        description: "JSON array of PHP versions to test on"
+      php-extensions:
+        type: string
+        required: true
+        description: "JSON array of PHP extensions"
+    secrets:
+      geonames-username:
+        required: true
+
+jobs:
+  test:
+    env:
+      GEONAMES_USERNAME: ${{ secrets.geonames-username }}
+    strategy:
+      matrix:
+        os: ${{ fromJson(inputs.operating-systems) }}
+        php: ${{ fromJson(inputs.php-versions) }}
+    runs-on: ${{ matrix.os }}
+    name: "PHP ${{ matrix.php }} on ${{ matrix.os }}"
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ join(fromJson(inputs.php-extensions), ',') }}
+      - name: "Composer: Cache packages"
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ matrix.os }}-php-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+      - name: "Composer: Install dependencies"
+        run: composer install --no-progress --no-interaction
+      - name: "Execute Unit Tests"
+        run: composer aternus:test
