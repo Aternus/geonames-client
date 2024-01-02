@@ -87,10 +87,12 @@ class Client
     const MAXROWS_TOO_LARGE = 25;
 
     /**
-     * HTTP Client Connection timeout: (float, default=0) Float describing the number of
-     * seconds to wait while trying to connect to a server. Use 0 to wait
-     * indefinitely (the default behavior).
-     * @var float
+     * HTTP Client connection timeout.
+     *
+     * The number of seconds to wait while trying to connect to a server.
+     * The default behavior, `0`, means to wait indefinitely.
+     *
+     * @var int $connect_timeout
      */
     protected $connect_timeout = 0;
 
@@ -316,28 +318,19 @@ class Client
 
     /**
      * Returns an array of supported endpoints.
-     *
-     * @return array An array of endpoints supported.
      * @see $endpoints
-     *
      */
-    public function getSupportedEndpoints()
+    public function getSupportedEndpoints(): array
     {
         return array_keys($this->endpoints);
     }
 
-    /**
-     * @return int|null
-     */
-    public function getLastTotalResultsCount()
+    public function getLastTotalResultsCount(): ?int
     {
         return $this->lastTotalResultsCount;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getLastUrlRequested()
+    public function getLastUrlRequested(): ?string
     {
         return $this->lastUrlRequested;
     }
@@ -354,7 +347,7 @@ class Client
      *
      * @return string The query string.
      */
-    protected function paramsToQueryString(array $params = [])
+    protected function paramsToQueryString(array $params = []): string
     {
         $query_string = [];
         foreach ($params as $name => $value) {
@@ -381,19 +374,13 @@ class Client
         return implode('&', $query_string);
     }
 
-    /**
-     * @return float
-     */
-    public function getConnectTimeout()
+    public function getConnectTimeout(): int
     {
         return $this->connect_timeout;
     }
 
-    /**
-     * @param float|int $connect_timeout
-     */
-    public function setConnectTimeout($connect_timeout)
+    public function setConnectTimeout(int $connect_timeout)
     {
-        $this->connect_timeout = (float)$connect_timeout;
+        $this->connect_timeout = $connect_timeout;
     }
 }
