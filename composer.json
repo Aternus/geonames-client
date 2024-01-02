@@ -1,7 +1,6 @@
 {
   "name": "aternus/geonames-client",
   "description": "GeoNames API Client",
-  "version": "2.3.0",
   "type": "library",
   "keywords": [
     "geonames",
