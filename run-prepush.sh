@@ -10,5 +10,3 @@ done
 docker compose exec php7 composer aternus:style
 
 docker compose exec php7 composer aternus:test
-
-docker compose down
