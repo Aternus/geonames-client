@@ -27,7 +27,7 @@ jobs:
     needs:
       - get-php-info
     name: "Lint"
-    uses: "./.github/shared-workflows/shared-lint.yml"
+    uses: "./.github/workflows/shared-lint.yml"
     with:
       operating-system: ubuntu-latest
       php-version: ${{ needs.get-php-info.outputs.lowest-version }}
@@ -39,7 +39,7 @@ jobs:
       - get-php-info
       - lint
     name: "Test"
-    uses: "./.github/shared-workflows/shared-test.yml"
+    uses: "./.github/workflows/shared-test.yml"
     with:
       operating-systems: '["ubuntu-latest"]'
       php-versions: ${{ needs.get-php-info.outputs.versions }}
