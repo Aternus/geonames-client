@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed PHP 7.2 syntax
 - Fixed documentation
+- Fixed deployments
 
 ## [2.3.0] - 2023-12-30
 
