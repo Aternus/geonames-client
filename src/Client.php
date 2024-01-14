@@ -192,9 +192,14 @@ class Client
      *
      * @param string $username Required for both Free and Commercial users.
      * @param string|null $token Optional. Commercial users only.
+     * @param string|null $url Optional. Defaults to the GeoNames web service URL.
      */
-    public function __construct(string $username, string $token = null)
+    public function __construct(string $username, string $token = null, $url = null)
     {
+        if (!empty($url)) {
+            $this->url = $url;
+        }
+        
         $this->username = $username;
         $this->token = $token;
     }
