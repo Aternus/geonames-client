@@ -43,6 +43,9 @@ $country_name = $country->countryName;
 
 // spoken languages (ISO-639-1)
 $country_languages = $country->languages;
+
+// change request URL - premium subdomain users
+$g = new GeoNamesClient('username', null, ['apiUrl' => 'request URL']);
 ```
 
 ## Why?
