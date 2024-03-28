@@ -192,11 +192,15 @@ class Client
      *
      * @param string $username Required for both Free and Commercial users.
      * @param string|null $token Optional. Commercial users only.
+     * @param array{apiUrl: ?string} $options Optional - override target URL
      */
-    public function __construct(string $username, string $token = null)
+    public function __construct(string $username, string $token = null, array $options = [])
     {
         $this->username = $username;
         $this->token = $token;
+        if (isset($options['apiUrl'])) {
+            $this->url = $options['apiUrl'];
+        }
     }
 
     /**
@@ -383,5 +387,10 @@ class Client
     public function setConnectTimeout(int $connect_timeout)
     {
         $this->connect_timeout = $connect_timeout;
+    }
+
+    public function getApiUrl(): string
+    {
+        return $this->url;
     }
 }

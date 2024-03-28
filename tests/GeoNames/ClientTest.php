@@ -354,4 +354,14 @@ final class ClientTest extends TestCase
 
         $this->assertEquals(10, $g->getConnectTimeout());
     }
+
+    public function testOverrideApiUrl()
+    {
+        $client = new GeoNamesClient(
+            $this->config['username'],
+            $this->config['token'],
+            ['apiUrl' => 'http://api.geonames.org']
+        );
+        $this->assertEquals('http://api.geonames.org', $client->getApiUrl());
+    }
 }
