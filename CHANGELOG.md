@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated cacert.pem
+- Allow access to env variables for forks
 
 ## [2.3.1] - 2024-01-03
 
