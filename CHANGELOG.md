@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.3.2] - 2024-06-08
+
+### Changed
+
+- Updated cacert.pem
+
 ## [2.3.1] - 2024-01-03
 
 ### Added
