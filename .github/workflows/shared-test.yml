@@ -28,7 +28,6 @@ jobs:
   test:
     env:
       GEONAMES_USERNAME: ${{ secrets.geonames-username }}
-    environment: test-forks
     strategy:
       matrix:
         os: ${{ fromJson(inputs.operating-systems) }}
