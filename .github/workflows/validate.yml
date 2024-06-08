@@ -18,7 +18,7 @@ jobs:
       versions: ${{ steps.php-info-matrix.outputs.version }}
       lowest-version: ${{ steps.php-info-matrix.outputs.lowest }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - id: php-info-matrix
         uses: WyriHaximus/github-action-composer-php-versions-in-range@v1
 
