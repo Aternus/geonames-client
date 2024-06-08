@@ -45,3 +45,5 @@ jobs:
       php-versions: ${{ needs.get-php-info.outputs.versions }}
       php-extensions: ${{ needs.get-php-info.outputs.extensions }}
       use-secure-environment: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
+    secrets:
+      geonames-username: ${{ secrets.GEONAMES_USERNAME }}
