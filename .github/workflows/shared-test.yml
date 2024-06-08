@@ -15,11 +15,6 @@ on:
         type: string
         required: true
         description: "JSON array of PHP extensions"
-      use-secure-environment:
-        type: boolean
-        required: false
-        default: false
-        description: "Whether to use the secure environment"
     secrets:
       geonames-username:
         required: true
