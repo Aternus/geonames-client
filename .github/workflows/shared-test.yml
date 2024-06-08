@@ -15,14 +15,16 @@ on:
         type: string
         required: true
         description: "JSON array of PHP extensions"
-    secrets:
-      geonames-username:
-        required: true
+      use-secure-environment:
+        type: boolean
+        required: false
+        default: false
+        description: "Whether to use the secure environment"
 
 jobs:
   test:
     env:
-      GEONAMES_USERNAME: ${{ secrets.geonames-username }}
+      GEONAMES_USERNAME: ${{ secrets.GEONAMES_USERNAME }}
     strategy:
       matrix:
         os: ${{ fromJson(inputs.operating-systems) }}
