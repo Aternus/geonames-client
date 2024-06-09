@@ -33,4 +33,4 @@ jobs:
       - name: "Composer: Install dependencies"
         run: composer install --no-progress --no-interaction
       - name: "Validate Code Styling"
-        run: composer aternus:style
+        run: composer aternus:style-check

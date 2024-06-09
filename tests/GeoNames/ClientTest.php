@@ -1,47 +1,57 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GeoNames;
 
-use PHPUnit\Framework\TestCase;
 use GeoNames\Client as GeoNamesClient;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use stdClass;
+use Throwable;
 
 final class ClientTest extends TestCase
 {
-    /**
-     * @var GeoNamesClient $client
-     */
+    /** @var GeoNamesClient $client */
     protected $client;
 
-    /** @var array|null */
+    /** @var array<string, string>|null */
     protected $config;
 
-    protected $geonameId = '294640'; // Israel
-    protected $country = 'IL'; // ISO-3166
-    protected $lat = 32.117425; // Israel, Tel Aviv
-    protected $lng = 34.831990; // Israel, Tel Aviv
+    /** @var string $geonameId e.g. Israel */
+    protected $geonameId = '294640';
+
+    /** @var string $country e.g. Israel in ISO-3166 format */
+    protected $country = 'IL';
+
+    /** @var float $lat e.g. Israel, Tel Aviv */
+    protected $lat = 32.117425;
+
+    /** @var float $lng e.g. Israel, Tel Aviv */
+    protected $lng = 34.831990;
 
     public function setUp(): void
     {
         $this->config = [
+            'token' => getenv('GEONAMES_TOKEN'),
             'username' => getenv('GEONAMES_USERNAME'),
-            'token' => getenv('GEONAMES_TOKEN')
         ];
         $this->client = new GeoNamesClient($this->config['username'], $this->config['token']);
     }
 
-    public function testIsAValidInstanceOfClient()
+    public function testIsAValidInstanceOfClient(): void
     {
         $this->assertInstanceOf(GeoNamesClient::class, $this->client);
     }
 
-    public function testUnsupportedEndpoint()
+    public function testUnsupportedEndpoint(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Throwable::class);
         $this->expectExceptionCode($this->client::UNSUPPORTED_ENDPOINT);
         $this->client->spaceships();
     }
 
-    public function testGetSupportedEndpoints()
+    public function testGetSupportedEndpoints(): void
     {
         $endpoints = $this->client->getSupportedEndpoints();
         $this->assertIsArray($endpoints);
@@ -49,13 +59,13 @@ final class ClientTest extends TestCase
         $this->assertContains('wikipediaSearch', $endpoints);
     }
 
-    public function testGetLastTotalResultsCountWhenResultIsLarge()
+    public function testGetLastTotalResultsCountWhenResultIsLarge(): void
     {
         // search for a large result
         // (!) maxRows default is 100
         $arr = $this->client->search([
-            'q' => '東京都',
             'lang' => 'en',
+            'q' => '東京都',
         ]);
 
         $this->assertIsArray($arr);
@@ -70,13 +80,13 @@ final class ClientTest extends TestCase
         $this->assertGreaterThan($count, $total);
     }
 
-    public function testGetLastTotalResultsCountWhenResultIsMedium()
+    public function testGetLastTotalResultsCountWhenResultIsMedium(): void
     {
         // search for a couple of results
         $arr = $this->client->search([
-            'name_equals' => 'Grüningen (Stedtli)',
             'country' => 'CH',
             'featureClass' => 'P',
+            'name_equals' => 'Grüningen (Stedtli)',
         ]);
 
         $this->assertIsArray($arr);
@@ -90,7 +100,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($count, $total);
     }
 
-    public function testGetLastTotalResultsCountWhenPlaceDoesntExist()
+    public function testGetLastTotalResultsCountWhenPlaceDoesntExist(): void
     {
         // search for a non-existing place
         $arr = $this->client->search([
@@ -106,9 +116,9 @@ final class ClientTest extends TestCase
         $this->assertEquals(0, $total);
     }
 
-    public function testGetLastTotalResultsForSingleEntryWhenThereIsNoTotalResultsCount()
+    public function testGetLastTotalResultsForSingleEntryWhenThereIsNoTotalResultsCount(): void
     {
-        $arr = $this->client->weatherIcao([
+        $this->client->weatherIcao([
             'ICAO' => 'LLBG',
         ]);
 
@@ -117,7 +127,7 @@ final class ClientTest extends TestCase
         $this->assertEquals(null, $total);
     }
 
-    public function testGetLastTotalResultsForMultipleEntriesWhenThereIsNoTotalResultsCount()
+    public function testGetLastTotalResultsForMultipleEntriesWhenThereIsNoTotalResultsCount(): void
     {
         // @see http://bboxfinder.com
         // Lng/ Lat
@@ -126,10 +136,10 @@ final class ClientTest extends TestCase
         $bbox_string = '33.760986,29.391748,35.661621,33.266250';
         $bbox_arr = array_map('trim', explode(',', $bbox_string));
         $bbox_params = [
-            'west' => $bbox_arr[0],
-            'south' => $bbox_arr[1],
             'east' => $bbox_arr[2],
             'north' => $bbox_arr[3],
+            'south' => $bbox_arr[1],
+            'west' => $bbox_arr[0],
         ];
         $arr = $this->client->weather($bbox_params);
 
@@ -142,7 +152,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($count, $total);
     }
 
-    public function testGetLastUrlRequested()
+    public function testGetLastUrlRequested(): void
     {
         $arr = $this->client->search([
             'q' => 'London',
@@ -156,7 +166,7 @@ final class ClientTest extends TestCase
 
         $g = $this->client;
 
-        $class = new \ReflectionClass($g);
+        $class = new ReflectionClass($g);
 
         // get url protected property
         $url_property = $class->getProperty('url');
@@ -182,19 +192,18 @@ final class ClientTest extends TestCase
         $this->assertEquals($urlExpected, $lastUrlRequested);
     }
 
-    public function testEndpointError()
+    public function testEndpointError(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Throwable::class);
         $this->expectExceptionCode($this->client::INVALID_PARAMETER);
         $this->client->astergdem([]);
     }
 
-
-    public function testParamsToQueryString()
+    public function testParamsToQueryString(): void
     {
         $g = $this->client;
 
-        $class = new \ReflectionClass($g);
+        $class = new ReflectionClass($g);
         $method = $class->getMethod('paramsToQueryString');
         $method->setAccessible(true);
 
@@ -243,18 +252,18 @@ final class ClientTest extends TestCase
         $this->assertArrayHasKey(0, $arr);
     }
 
-    public function testAstergram()
+    public function testAstergram(): void
     {
         $obj = $this->client->astergdem([
             'lat' => $this->lat,
             'lng' => $this->lng,
         ]);
-        $this->assertInstanceOf(\stdClass::class, $obj);
+        $this->assertInstanceOf(stdClass::class, $obj);
         $this->assertObjectHasAttribute('astergdem', $obj);
         $this->assertEquals('45', $obj->astergdem);
     }
 
-    public function testCountryInfo()
+    public function testCountryInfo(): void
     {
         $arr = $this->client->countryInfo([
             'country' => $this->country,
@@ -267,47 +276,47 @@ final class ClientTest extends TestCase
         $this->assertEquals('Израиль', $obj->countryName);
     }
 
-    public function testAddress()
+    public function testAddress(): void
     {
         $obj = $this->client->address([
             'lat' => 34.072713,
             'lng' => -118.402997,
         ]);
-        $this->assertInstanceOf(\stdClass::class, $obj);
+        $this->assertInstanceOf(stdClass::class, $obj);
         $this->assertObjectHasAttribute('countryCode', $obj);
         $this->assertEquals('US', $obj->countryCode);
         $this->assertObjectHasAttribute('locality', $obj);
         $this->assertEquals('Beverly Hills', $obj->locality);
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $obj = $this->client->get([
             'geonameId' => $this->geonameId,
             'lang' => 'en',
         ]);
-        $this->assertInstanceOf(\stdClass::class, $obj);
+        $this->assertInstanceOf(stdClass::class, $obj);
         $this->assertObjectHasAttribute('toponymName', $obj);
         $this->assertEquals('State of Israel', $obj->toponymName);
     }
 
-    public function testOcean()
+    public function testOcean(): void
     {
         $obj = $this->client->ocean([
             'lat' => $this->lat,
             'lng' => $this->lng,
             'radius' => 10,
         ]);
-        $this->assertInstanceOf(\stdClass::class, $obj);
+        $this->assertInstanceOf(stdClass::class, $obj);
         $this->assertObjectHasAttribute('name', $obj);
         $this->assertEquals('Mediterranean Sea, Eastern Basin', $obj->name);
     }
 
-    public function testSearch()
+    public function testSearch(): void
     {
         $arr = $this->client->search([
-            'q' => '東京都',
             'lang' => 'en',
+            'q' => '東京都',
         ]);
         $this->assertIsArray($arr);
         $this->assertArrayHasKey(0, $arr);
@@ -319,7 +328,7 @@ final class ClientTest extends TestCase
     /*
      * GitHub Example
      */
-    public function testGitHubExample()
+    public function testGitHubExample(): void
     {
         $g = $this->client;
 
@@ -330,7 +339,8 @@ final class ClientTest extends TestCase
         // note that I'm using the array destructor introduced in PHP 7.1
         [$country] = $g->countryInfo([
             'country' => 'IL',
-            'lang' => 'ru', // display info in Russian
+            // display info in Russian
+            'lang' => 'ru',
         ]);
 
         // country name (in Russian)
@@ -344,7 +354,7 @@ final class ClientTest extends TestCase
         $this->assertEquals('he,ar-IL,en-IL,', $country_languages);
     }
 
-    public function testConnectTimeout()
+    public function testConnectTimeout(): void
     {
         $g = $this->client;
 
@@ -355,7 +365,7 @@ final class ClientTest extends TestCase
         $this->assertEquals(10, $g->getConnectTimeout());
     }
 
-    public function testOverrideApiUrl()
+    public function testOverrideApiUrl(): void
     {
         $client = new GeoNamesClient(
             $this->config['username'],

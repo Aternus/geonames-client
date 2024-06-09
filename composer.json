@@ -14,7 +14,8 @@
   ],
   "license": "MIT",
   "scripts": {
-    "aternus:style": "phpcs",
+    "aternus:style-check": "phpcs",
+    "aternus:style-fix": "phpcbf",
     "aternus:test": "phpunit --testdox"
   },
   "scripts-descriptions": {
@@ -45,7 +46,10 @@
   },
   "config": {
     "preferred-install": "dist",
-    "optimize-autoloader": true
+    "optimize-autoloader": true,
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   },
   "require": {
     "php": ">=7.2.0",
@@ -57,6 +61,7 @@
   "require-dev": {
     "ext-xdebug": "*",
     "squizlabs/php_codesniffer": "3.*",
-    "phpunit/phpunit": "8.*"
+    "phpunit/phpunit": "8.*",
+    "slevomat/coding-standard": "^8.15"
   }
 }

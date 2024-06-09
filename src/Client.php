@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GeoNames;
 
-use stdClass;
 use Exception;
-use GuzzleHttp\Exception\GuzzleException as HttpClientException;
 use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Exception\GuzzleException as HttpClientException;
+use stdClass;
 
 /**
  * GeoNames API Client.
@@ -14,54 +16,53 @@ use GuzzleHttp\Client as HttpClient;
  * @link https://www.geonames.org/export/web-services.html
  *
  * @method stdClass astergdem(array $params) Elevation - Aster Global Digital Elevation Model V2 2011.
- * @method array     children(array $params)
- * @method array     cities(array $params)
- * @method array     contains(array $params)
+ * @method array children(array $params)
+ * @method array cities(array $params)
+ * @method array contains(array $params)
  * @method stdClass countryCode(array $params)
- * @method array     countryInfo(array $params) Country Info
+ * @method array countryInfo(array $params) Country Info
  * @method stdClass countrySubdivision(array $params)
- * @method array     earthquakes(array $params)
- * @method array     findNearby(array $params)
- * @method array     findNearbyPlaceName(array $params)
- * @method array     findNearbyPostalCodes(array $params)
- * @method array     findNearbyStreets(array $params)
- * @method array     findNearbyStreetsOSM(array $params)
+ * @method array earthquakes(array $params)
+ * @method array findNearby(array $params)
+ * @method array findNearbyPlaceName(array $params)
+ * @method array findNearbyPostalCodes(array $params)
+ * @method array findNearbyStreets(array $params)
+ * @method array findNearbyStreetsOSM(array $params)
  * @method stdClass findNearByWeather(array $params)
- * @method array     findNearbyWikipedia(array $params)
+ * @method array findNearbyWikipedia(array $params)
  * @method stdClass findNearestAddress(array $params)
  * @method stdClass findNearestIntersection(array $params)
  * @method stdClass findNearestIntersectionOSM(array $params)
- * @method array     findNearbyPOIsOSM(array $params)
+ * @method array findNearbyPOIsOSM(array $params)
  * @method stdClass address(array $params)
  * @method stdClass geoCodeAddress(array $params)
  * @method stdClass get(array $params)
  * @method stdClass gtopo30(array $params) Elevation - GTOPO30 is a global digital elevation model (DEM)
- *                                                      with a horizontal grid spacing of 30 arc seconds.
- *
- * @method array     hierarchy(array $params)
+ *                                         with a horizontal grid spacing of 30 arc seconds.
+ * @method array hierarchy(array $params)
  * @method stdClass neighbourhood(array $params)
- * @method array     neighbours(array $params)
+ * @method array neighbours(array $params)
  * @method stdClass ocean(array $params)
- * @method array     postalCodeCountryInfo(array $params)
- * @method array     postalCodeLookup(array $params)
- * @method array     postalCodeSearch(array $params)
- * @method array     search(array $params)
- * @method array     siblings(array $params)
+ * @method array postalCodeCountryInfo(array $params)
+ * @method array postalCodeLookup(array $params)
+ * @method array postalCodeSearch(array $params)
+ * @method array search(array $params)
+ * @method array siblings(array $params)
  * @method stdClass srtm1(array $params) Elevation - SRTM1 (Shuttle Radar Topography Mission).
  * @method stdClass srtm3(array $params) Elevation - SRTM3 (Shuttle Radar Topography Mission).
  * @method stdClass timezone(array $params)
- * @method array     weather(array $params)
+ * @method array weather(array $params)
  * @method stdClass weatherIcao(array $params) Most recent weather observation using
- *                                              International Civil Aviation Organization (ICAO) code.
- *
- * @method array     wikipediaBoundingBox(array $params)
- * @method array     wikipediaSearch(array $params)
+ *                                             International Civil Aviation Organization (ICAO) code.
+ * @method array wikipediaBoundingBox(array $params)
+ * @method array wikipediaSearch(array $params)
  */
-class Client
+final class Client
 {
     /**
      * Exception codes defined by this library.
      */
+
     public const UNSUPPORTED_ENDPOINT = 1;
     public const JSON_DECODE_ERROR = 2;
 
@@ -70,6 +71,7 @@ class Client
      *
      * @see https://www.geonames.org/export/webservice-exception.html
      */
+
     public const AUTHORIZATION_EXCEPTION = 10;
     public const RECORD_DOES_NOT_EXIST = 11;
     public const OTHER_ERROR = 12;
@@ -129,9 +131,10 @@ class Client
      *
      * @see https://www.geonames.org/export/ws-overview.html
      *
-     * @var array $endpoints
+     * @var array<string, string|bool> $endpoints
      */
     protected $endpoints = [
+        'address' => 'address',
         'astergdem' => false,
         'children' => 'geonames',
         'cities' => 'geonames',
@@ -142,26 +145,30 @@ class Client
         'earthquakes' => 'earthquakes',
         'findNearby' => 'geonames',
         'findNearbyPlaceName' => 'geonames',
+        'findNearbyPOIsOSM' => 'poi',
         'findNearbyPostalCodes' => 'postalCodes',
-        'findNearbyStreets' => 'streetSegment', // US only
+        // US only
+        'findNearbyStreets' => 'streetSegment',
         'findNearbyStreetsOSM' => 'streetSegment',
         'findNearByWeather' => 'weatherObservation',
         'findNearbyWikipedia' => 'geonames',
-        'findNearestAddress' => 'address', // US only
-        'findNearestIntersection' => 'intersection', // US only
+        // US only
+        'findNearestAddress' => 'address',
+        // US only
+        'findNearestIntersection' => 'intersection',
         'findNearestIntersectionOSM' => 'intersection',
-        'findNearbyPOIsOSM' => 'poi',
-        'address' => 'address',
         'geoCodeAddress' => 'address',
         'get' => false,
         'gtopo30' => false,
         'hierarchy' => 'geonames',
-        'neighbourhood' => 'neighbourhood', // US only
+        // US only
+        'neighbourhood' => 'neighbourhood',
         'neighbours' => 'geonames',
         'ocean' => 'ocean',
         'postalCodeCountryInfo' => 'geonames',
         'postalCodeLookup' => 'postalcodes',
-        'postalCodeSearch' => 'postalCodes', // not a typo
+        // not a typo
+        'postalCodeSearch' => 'postalCodes',
         'search' => 'geonames',
         'siblings' => 'geonames',
         'srtm1' => false,
@@ -173,15 +180,37 @@ class Client
         'wikipediaSearch' => 'geonames',
     ];
 
-    /**
-     * @var int|null
-     */
+    /** @var int|null */
     protected $lastTotalResultsCount = null;
 
-    /**
-     * @var string|null
-     */
+    /** @var string|null */
     protected $lastUrlRequested = null;
+
+    /**
+     * GeoNames Client Options
+     *
+     * Options:
+     * - api_url: URL of the GeoNames web service.
+     * - fallback_api_url: Fallback URL of the GeoNames web service.
+     * - connection_timeout: HTTP Client connection timeout.
+     *   The number of seconds to wait while trying to connect to a server.
+     *   The default behavior, `0`, means to wait indefinitely.
+     * - fallback_api_url_trigger_count: Number of connection timeouts
+     *   before using the `fallback_api_url`
+     *
+     * @var array{
+     *     api_url?: string,
+     *     fallback_api_url?: string,
+     *     connection_timeout?: int,
+     *     fallback_api_url_trigger_count?: int,
+     * } $options
+     */
+    protected $options = [
+        'api_url' => 'https://secure.geonames.org/',
+        'connection_timeout' => 0,
+        'fallback_api_url' => 'https://api.geonames.org/',
+        'fallback_api_url_trigger_count' => 10,
+    ];
 
     /**
      * Constructor.
@@ -196,13 +225,97 @@ class Client
      *     apiUrl?: string,
      * } $options Optional. Client options.
      */
-    public function __construct(string $username, string $token = null, array $options = [])
+    public function __construct(string $username, ?string $token = null, array $options = [])
     {
         $this->username = $username;
         $this->token = $token;
-        if (isset($options['apiUrl'])) {
-            $this->url = $options['apiUrl'];
+
+        if (!isset($options['apiUrl'])) {
+            return;
         }
+
+        $this->url = $options['apiUrl'];
+    }
+
+    /**
+     * Returns an array of supported endpoints.
+     *
+     * @see $endpoints
+     *
+     * @return array<string>
+     */
+    public function getSupportedEndpoints(): array
+    {
+        return array_keys($this->endpoints);
+    }
+
+    public function getLastTotalResultsCount(): ?int
+    {
+        return $this->lastTotalResultsCount;
+    }
+
+    public function getLastUrlRequested(): ?string
+    {
+        return $this->lastUrlRequested;
+    }
+
+    public function getConnectTimeout(): int
+    {
+        return $this->connect_timeout;
+    }
+
+    public function setConnectTimeout(int $connect_timeout): void
+    {
+        $this->connect_timeout = $connect_timeout;
+    }
+
+    public function getApiUrl(): string
+    {
+        return $this->url;
+    }
+
+    /**
+     * Convert Parameters Array to a Query String.
+     *
+     * Escape values according to RFC 1738.
+     *
+     * @see https://forum.geonames.org/gforum/posts/list/8.page
+     * @see rawurlencode()
+     *
+     * @param array<mixed> $params Associative array of query parameters.
+     *
+     * @return string The query string.
+     */
+    protected function paramsToQueryString(array $params = []): string
+    {
+        $query_string = [];
+
+        foreach ($params as $name => $value) {
+            if (empty($name)) {
+                continue;
+            }
+
+            if (is_array($value)) {
+                if (empty($value)) {
+                    // skip empty arrays
+                    continue;
+                }
+
+                foreach ($value as $key => $item) {
+                    if (!is_string($key)) {
+                        $key = $name;
+                    }
+
+                    $item = (string)$item;
+                    $query_string[] = $key . '=' . rawurlencode($item);
+                }
+            } else {
+                $value = (string)$value;
+                $query_string[] = $name . '=' . rawurlencode($value);
+            }
+        }
+
+        return implode('&', $query_string);
     }
 
     /**
@@ -211,9 +324,10 @@ class Client
      * Queries the endpoint using the parameters.
      *
      * @param string $endpoint The endpoint to call.
-     * @param array $params Optional. Parameters to pass to the endpoint.
+     * @param array<mixed> $params Optional. Parameters to pass to the endpoint.
      *
-     * @return object \stdClass The response object.
+     * @return object|array<mixed> The response object or array.
+     *
      * @throws HttpClientException When HttpClient had a fatal failure.
      *
      * @throws Exception When an invalid method is called or when the web service returns an error.
@@ -224,11 +338,8 @@ class Client
         $this->lastUrlRequested = null;
 
         // check that the endpoint is supported
-        if (!in_array($endpoint, $this->getSupportedEndpoints())) {
-            throw new Exception(
-                "Unsupported endpoint: {$endpoint}",
-                self::UNSUPPORTED_ENDPOINT
-            );
+        if (!in_array($endpoint, $this->getSupportedEndpoints(), true)) {
+            throw new Exception("Unsupported endpoint: {$endpoint}", self::UNSUPPORTED_ENDPOINT);
         }
 
         // handle params
@@ -252,8 +363,8 @@ class Client
 
         // HttpClient arguments
         $HttpClient_args = [
-            'connect_timeout' => $this->connect_timeout,
             'base_uri' => $this->url,
+            'connect_timeout' => $this->connect_timeout,
             // @see https://curl.haxx.se/docs/caextract.html
             'verify' => __DIR__ . DIRECTORY_SEPARATOR . 'cacert.pem',
         ];
@@ -287,18 +398,12 @@ class Client
 
         // check that json_decode() worked correctly
         if (!is_object($response_object)) {
-            throw new Exception(
-                "Could not JSON decode the response body.",
-                self::JSON_DECODE_ERROR
-            );
+            throw new Exception("Could not JSON decode the response body.", self::JSON_DECODE_ERROR);
         }
 
         // check for errors in response
         if (isset($response_object->status->message, $response_object->status->value)) {
-            throw new Exception(
-                $response_object->status->message,
-                (int)$response_object->status->value
-            );
+            throw new Exception($response_object->status->message, (int)$response_object->status->value);
         }
 
         // return the value of the root property from the response object (if the endpoint supports it)
@@ -307,92 +412,23 @@ class Client
         // root property is defined
         if ($root_property !== false && property_exists($response_object, $root_property)) {
             $response_data = $response_object->{$root_property};
+
             if (property_exists($response_object, 'totalResultsCount')) {
                 $this->lastTotalResultsCount = $response_object->totalResultsCount;
             } elseif (is_array($response_data)) {
                 $this->lastTotalResultsCount = count($response_data);
             }
+
             return $response_data;
         }
 
         // root property is not defined
         $this->lastTotalResultsCount = null;
+
         if (is_array($response_object)) {
             $this->lastTotalResultsCount = count($response_object);
         }
+
         return $response_object;
-    }
-
-    /**
-     * Returns an array of supported endpoints.
-     * @see $endpoints
-     */
-    public function getSupportedEndpoints(): array
-    {
-        return array_keys($this->endpoints);
-    }
-
-    public function getLastTotalResultsCount(): ?int
-    {
-        return $this->lastTotalResultsCount;
-    }
-
-    public function getLastUrlRequested(): ?string
-    {
-        return $this->lastUrlRequested;
-    }
-
-    /**
-     * Convert Parameters Array to a Query String.
-     *
-     * Escape values according to RFC 1738.
-     *
-     * @see https://forum.geonames.org/gforum/posts/list/8.page
-     * @see rawurlencode()
-     *
-     * @param array $params Associative array of query parameters.
-     *
-     * @return string The query string.
-     */
-    protected function paramsToQueryString(array $params = []): string
-    {
-        $query_string = [];
-        foreach ($params as $name => $value) {
-            if (empty($name)) {
-                continue;
-            }
-            if (is_array($value)) {
-                if (empty($value)) {
-                    // skip empty arrays
-                    continue;
-                }
-                foreach ($value as $key => $item) {
-                    if (!is_string($key)) {
-                        $key = $name;
-                    }
-                    $item = (string)$item;
-                    $query_string[] = $key . '=' . rawurlencode($item);
-                }
-            } else {
-                $value = (string)$value;
-                $query_string[] = $name . '=' . rawurlencode($value);
-            }
-        }
-        return implode('&', $query_string);
-    }
-
-    public function getConnectTimeout(): int
-    {
-        return $this->connect_timeout;
-    }
-
-    public function setConnectTimeout(int $connect_timeout)
-    {
-        $this->connect_timeout = $connect_timeout;
-    }
-
-    public function getApiUrl(): string
-    {
-        return $this->url;
     }
 }
