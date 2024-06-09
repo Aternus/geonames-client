@@ -7,6 +7,7 @@ namespace GeoNames;
 use Exception;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\GuzzleException as HttpClientException;
+use InvalidArgumentException;
 use stdClass;
 
 /**
@@ -168,7 +169,7 @@ class Client
         'connect_timeout' => 0,
         'fallback_api_url' => 'https://api.geonames.org/',
         'fallback_api_url_trigger_count' => 10,
-        'token' => null,
+        'token' => '',
         'username' => '',
     ];
 
@@ -194,7 +195,7 @@ class Client
      * @see https://www.geonames.org/commercial-webservices.html
      *
      * @param string $username Required for both Free and Commercial users.
-     * @param string|null $token Optional. Commercial users only.
+     * @param string $token Optional. Commercial users only.
      * @param array{
      *  username?: string,
      *  token?: string,
@@ -202,12 +203,17 @@ class Client
      *  connect_timeout?: int,
      * } $options Optional. Client options.
      */
-    public function __construct(string $username, ?string $token = null, array $options = [])
+    public function __construct(string $username, string $token = '', array $options = [])
     {
-        $this->setOptions(array_merge([
-            'token' => $token,
+        $legacy_options = [
             'username' => $username,
-        ], $options));
+        ];
+
+        if (!empty($token)) {
+            $legacy_options['token'] = $token;
+        }
+
+        $this->setOptions(array_merge($legacy_options, $options));
     }
 
     /**
@@ -245,7 +251,7 @@ class Client
     }
 
     /**
-     * @return string|array{
+     * @return string|int|array{
      *  username: string,
      *  token: string,
      *  api_url: string,
@@ -269,6 +275,8 @@ class Client
      *  connect_timeout?: int,
      * } $options
      *
+     * @throws InvalidArgumentException When any option is invalid.
+     *
      * @return array{
      *  username: string,
      *  token: string,
@@ -278,7 +286,38 @@ class Client
      */
     public function setOptions(array $options): array
     {
-        return $this->options = array_merge($this->options, $options);
+        foreach ($options as $key => $value) {
+            switch ($key) {
+                case 'username':
+                case 'token':
+                case 'api_url':
+                case 'fallback_api_url':
+                    if (is_string($value)) {
+                        break;
+                    }
+
+                    throw new InvalidArgumentException("{$key} must be a string");
+                case 'connect_timeout':
+                case 'fallback_api_url_trigger_count':
+                    if (is_int($value)) {
+                        break;
+                    }
+
+                    throw new InvalidArgumentException("{$key} must be an integer");
+                default:
+                    throw new InvalidArgumentException("{$key} is invalid");
+            }
+        }
+
+        $merged_options = array_merge($this->options, $options);
+
+        foreach (['username', 'api_url', 'fallback_api_url', 'fallback_api_url_trigger_count'] as $key) {
+            if (empty($merged_options[$key])) {
+                throw new InvalidArgumentException("{$key} is required and cannot be empty");
+            }
+        }
+
+        return $this->options = $merged_options;
     }
 
     /**

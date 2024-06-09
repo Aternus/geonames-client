@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GeoNames;
 
 use GeoNames\Client as GeoNamesClient;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use stdClass;
@@ -33,8 +34,8 @@ final class ClientTest extends TestCase
     public function setUp(): void
     {
         $this->config = [
-            'token' => getenv('GEONAMES_TOKEN'),
-            'username' => getenv('GEONAMES_USERNAME'),
+            'token' => getenv('GEONAMES_TOKEN') ?? '',
+            'username' => getenv('GEONAMES_USERNAME') ?? '',
         ];
         $this->client = new GeoNamesClient($this->config['username'], $this->config['token']);
     }
@@ -42,6 +43,74 @@ final class ClientTest extends TestCase
     public function testIsAValidInstanceOfClient(): void
     {
         $this->assertInstanceOf(GeoNamesClient::class, $this->client);
+    }
+
+    public function testConnectTimeout(): void
+    {
+        $g = $this->client;
+
+        $this->assertEquals(0, $g->getConnectTimeout());
+
+        $g->setConnectTimeout(10);
+
+        $this->assertEquals(10, $g->getConnectTimeout());
+    }
+
+    public function testOverrideApiUrl(): void
+    {
+        $client = new GeoNamesClient(
+            $this->config['username'],
+            $this->config['token'],
+            ['api_url' => 'https://api.geonames.org']
+        );
+        $this->assertEquals('https://api.geonames.org', $client->getOptions('api_url'));
+    }
+
+    public function testSetOptionsWithValidInputs(): void
+    {
+        $client = new GeoNamesClient(
+            $this->config['username'],
+            $this->config['token']
+        );
+
+        $options = [
+            'api_url' => 'https://secure.geonames.org/',
+            'connect_timeout' => 0,
+            'fallback_api_url' => 'https://api.geonames.org/',
+            'fallback_api_url_trigger_count' => 10,
+            'token' => 'geonames_client_php_test_token',
+            'username' => 'geonames_client_php_test_username',
+        ];
+
+        $result = $client->setOptions($options);
+        $this->assertEquals($options, $result);
+    }
+
+    public function testSetOptionsWithEmptyToken(): void
+    {
+        $this->client->setOptions(['token' => '']);
+        $this->assertEquals('', $this->client->getOptions('token'));
+    }
+
+    public function testSetOptionsWithInvalidTypeForUsername(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('username must be a string');
+        $this->client->setOptions(['username' => 123]);
+    }
+
+    public function testSetOptionsWithInvalidOptionKey(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('invalid_key is invalid');
+        $this->client->setOptions(['invalid_key' => 'value']);
+    }
+
+    public function testSetOptionsMissingRequiredFields(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('username is required and cannot be empty');
+        $this->client->setOptions(['username' => '']);
     }
 
     public function testUnsupportedEndpoint(): void
@@ -350,38 +419,5 @@ final class ClientTest extends TestCase
         $this->assertCount(39, $endpoints);
         $this->assertEquals('Израиль', $country_name);
         $this->assertEquals('he,ar-IL,en-IL,', $country_languages);
-    }
-
-    public function testConnectTimeout(): void
-    {
-        $g = $this->client;
-
-        $this->assertEquals(0, $g->getConnectTimeout());
-
-        $g->setConnectTimeout(10);
-
-        $this->assertEquals(10, $g->getConnectTimeout());
-    }
-
-    public function testOverrideApiUrl(): void
-    {
-        $client = new GeoNamesClient(
-            $this->config['username'],
-            $this->config['token'],
-            ['api_url' => 'https://api.geonames.org']
-        );
-        $this->assertEquals('https://api.geonames.org', $client->getOptions('api_url'));
-    }
-
-    public function testSetGetOptions(): void
-    {
-        $client = new GeoNamesClient(
-            $this->config['username'],
-            $this->config['token']
-        );
-
-        // override username
-        $client->setOptions(["username" => 'geonames_client_php_test']);
-        $this->assertEquals('geonames_client_php_test', $client->getOptions()['username']);
     }
 }

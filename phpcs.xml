@@ -74,7 +74,14 @@
     <rule ref="SlevomatCodingStandard.Commenting.UselessInheritDocComment"/>
 
     <rule ref="SlevomatCodingStandard.ControlStructures.AssignmentInCondition"/>
-    <rule ref="SlevomatCodingStandard.ControlStructures.BlockControlStructureSpacing"/>
+    <rule ref="SlevomatCodingStandard.ControlStructures.BlockControlStructureSpacing">
+        <properties>
+            <property name="controlStructures" type="array">
+                <element value="if" />
+                <element value="switch" />
+            </property>
+        </properties>
+    </rule>
     <rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit"/>
     <rule ref="SlevomatCodingStandard.ControlStructures.DisallowContinueWithoutIntegerOperandInSwitch"/>
     <rule ref="SlevomatCodingStandard.ControlStructures.DisallowTrailingMultiLineTernaryOperator"/>
