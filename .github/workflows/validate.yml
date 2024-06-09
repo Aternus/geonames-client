@@ -3,9 +3,6 @@ name: "validate"
 on:
   pull_request:
     branches: [ "master" ]
-  pull_request_target:
-    branches: [ "master" ]
-    types: [ "opened", "synchronize", "reopened", "ready_for_review" ]
   push:
     branches: [ "master" ]
 
