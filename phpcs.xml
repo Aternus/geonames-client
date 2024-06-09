@@ -51,7 +51,6 @@
     <rule ref="SlevomatCodingStandard.Classes.ParentCallSpacing"/>
     <rule ref="SlevomatCodingStandard.Classes.PropertyDeclaration"/>
     <rule ref="SlevomatCodingStandard.Classes.PropertySpacing"/>
-    <rule ref="SlevomatCodingStandard.Classes.RequireAbstractOrFinal"/>
     <rule ref="SlevomatCodingStandard.Classes.RequireMultiLineMethodSignature"/>
     <rule ref="SlevomatCodingStandard.Classes.RequireSelfReference"/>
     <rule ref="SlevomatCodingStandard.Classes.TraitUseDeclaration"/>

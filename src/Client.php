@@ -57,7 +57,7 @@ use stdClass;
  * @method array wikipediaBoundingBox(array $params)
  * @method array wikipediaSearch(array $params)
  */
-final class Client
+class Client
 {
     /**
      * Exception codes defined by this library.
