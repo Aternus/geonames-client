@@ -1,6 +1,6 @@
 # GeoNames Client
 
-A [GeoNames](http://www.geonames.org) API Client for PHP.
+A [GeoNames](https://www.geonames.org) API Client for PHP.
 
 [![validate](https://github.com/Aternus/geonames-client/actions/workflows/validate.yml/badge.svg)](https://github.com/Aternus/geonames-client/actions/workflows/validate.yml)
 
@@ -19,7 +19,7 @@ Install with confidence 🛡️
 ## Quick Start
 
 An overview of available API parameters for each endpoint is
-[available here](http://www.geonames.org/export/ws-overview.html).
+[available here](https://www.geonames.org/export/ws-overview.html).
 
 ```php
 <?php
@@ -107,7 +107,7 @@ yourself time, bandwidth and be respectful to GeoNames for providing all that
 data for free.
 
 If you're making heavy use of the statistical data, you can subscribe to
-their [Premium Data](http://www.geonames.org/products/premium-data.html) plan.
+their [Premium Data](https://www.geonames.org/products/premium-data.html) plan.
 
 ## License
 
