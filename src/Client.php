@@ -181,11 +181,12 @@ final class Client
      * - username: GeoNames username.
      * - token: GeoNames token (i.e. premium user key).
      * - api_url: URL of the GeoNames web service.
-     * - fallback_api_url: Fallback URL of the GeoNames web service.
      * - connect_timeout: HTTP Client connection timeout.
      *   The number of seconds to wait while trying to connect to a server.
      *   The default behavior, `0`, means to wait indefinitely.
-     * - fallback_api_url_trigger_count: Number of connection timeouts
+     *
+     * - fallback_api_url: ⚠️ NOT IMPLEMENTED YET. Fallback URL of the GeoNames web service.
+     * - fallback_api_url_trigger_count: ⚠️ NOT IMPLEMENTED YET. Number of connection timeouts
      *   before using the `fallback_api_url`
      *
      * @link https://www.geonames.org/
@@ -198,9 +199,7 @@ final class Client
      *  username?: string,
      *  token?: string,
      *  api_url?: string,
-     *  fallback_api_url?: string,
      *  connect_timeout?: int,
-     *  fallback_api_url_trigger_count?: int,
      * } $options Optional. Client options.
      */
     public function __construct(string $username, ?string $token = null, array $options = [])
@@ -250,9 +249,7 @@ final class Client
      *  username: string,
      *  token: string,
      *  api_url: string,
-     *  fallback_api_url: string,
      *  connect_timeout: int,
-     *  fallback_api_url_trigger_count: int,
      * }
      */
     public function getOptions(string $key = '')
@@ -269,18 +266,14 @@ final class Client
      *  username?: string,
      *  token?: string,
      *  api_url?: string,
-     *  fallback_api_url?: string,
      *  connect_timeout?: int,
-     *  fallback_api_url_trigger_count?: int,
      * } $options
      *
      * @return array{
      *  username: string,
      *  token: string,
      *  api_url: string,
-     *  fallback_api_url: string,
      *  connect_timeout: int,
-     *  fallback_api_url_trigger_count: int,
      * }
      */
     public function setOptions(array $options): array
