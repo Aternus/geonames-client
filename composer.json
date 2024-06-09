@@ -19,7 +19,8 @@
     "aternus:test": "phpunit --testdox"
   },
   "scripts-descriptions": {
-    "aternus:style": "Validate the coding style of the library.",
+    "aternus:style-check": "Validate the coding style of the library.",
+    "aternus:style-fix": "Adjust the code according to the coding style of the library.",
     "aternus:test": "Test the code of the library."
   },
   "homepage": "https://github.com/Aternus/geonames-client",
