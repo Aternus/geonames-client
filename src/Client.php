@@ -10,8 +10,8 @@ use GuzzleHttp\Client as HttpClient;
 /**
  * GeoNames API Client.
  *
- * @link http://www.geonames.org/export/ws-overview.html
- * @link http://www.geonames.org/export/web-services.html
+ * @link https://www.geonames.org/export/ws-overview.html
+ * @link https://www.geonames.org/export/web-services.html
  *
  * @method stdClass astergdem(array $params) Elevation - Aster Global Digital Elevation Model V2 2011.
  * @method array     children(array $params)
@@ -68,7 +68,7 @@ class Client
     /**
      * Exception codes defined by the web service.
      *
-     * @see http://www.geonames.org/export/webservice-exception.html
+     * @see https://www.geonames.org/export/webservice-exception.html
      */
     public const AUTHORIZATION_EXCEPTION = 10;
     public const RECORD_DOES_NOT_EXIST = 11;
