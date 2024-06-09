@@ -90,41 +90,6 @@ final class Client
     public const MAXROWS_TOO_LARGE = 25;
 
     /**
-     * HTTP Client connection timeout.
-     *
-     * The number of seconds to wait while trying to connect to a server.
-     * The default behavior, `0`, means to wait indefinitely.
-     *
-     * @var int $connect_timeout
-     */
-    protected $connect_timeout = 0;
-
-    /**
-     * URL of the GeoNames web service.
-     *
-     * @var string $url
-     */
-    protected $url = 'https://secure.geonames.org';
-
-    /**
-     * Auth username.
-     *
-     * @see https://www.geonames.org/commercial-webservices.html
-     *
-     * @var string $username
-     */
-    protected $username;
-
-    /**
-     * Auth token.
-     *
-     * @see https://www.geonames.org/commercial-webservices.html
-     *
-     * @var string $token
-     */
-    protected $token;
-
-    /**
      * Array of supported endpoints (listed alphabetically) and their corresponding root property (if any).
      *
      * Note: Only JSON endpoints are supported.
@@ -189,27 +154,22 @@ final class Client
     /**
      * GeoNames Client Options
      *
-     * Options:
-     * - api_url: URL of the GeoNames web service.
-     * - fallback_api_url: Fallback URL of the GeoNames web service.
-     * - connection_timeout: HTTP Client connection timeout.
-     *   The number of seconds to wait while trying to connect to a server.
-     *   The default behavior, `0`, means to wait indefinitely.
-     * - fallback_api_url_trigger_count: Number of connection timeouts
-     *   before using the `fallback_api_url`
-     *
      * @var array{
-     *     api_url?: string,
-     *     fallback_api_url?: string,
-     *     connection_timeout?: int,
-     *     fallback_api_url_trigger_count?: int,
+     * username: string,
+     * token?: string,
+     * api_url?: string,
+     * fallback_api_url?: string,
+     * connect_timeout?: int,
+     * fallback_api_url_trigger_count?: int,
      * } $options
      */
     protected $options = [
         'api_url' => 'https://secure.geonames.org/',
-        'connection_timeout' => 0,
+        'connect_timeout' => 0,
         'fallback_api_url' => 'https://api.geonames.org/',
         'fallback_api_url_trigger_count' => 10,
+        'token' => null,
+        'username' => '',
     ];
 
     /**
@@ -217,24 +177,38 @@ final class Client
      *
      * Creates a new GeoNames API Client instance.
      *
+     * Options:
+     * - username: GeoNames username.
+     * - token: GeoNames token (i.e. premium user key).
+     * - api_url: URL of the GeoNames web service.
+     * - fallback_api_url: Fallback URL of the GeoNames web service.
+     * - connect_timeout: HTTP Client connection timeout.
+     *   The number of seconds to wait while trying to connect to a server.
+     *   The default behavior, `0`, means to wait indefinitely.
+     * - fallback_api_url_trigger_count: Number of connection timeouts
+     *   before using the `fallback_api_url`
+     *
      * @link https://www.geonames.org/
+     *
+     * @see https://www.geonames.org/commercial-webservices.html
      *
      * @param string $username Required for both Free and Commercial users.
      * @param string|null $token Optional. Commercial users only.
      * @param array{
-     *     apiUrl?: string,
+     * username: string,
+     * token?: string,
+     * api_url?: string,
+     * fallback_api_url?: string,
+     * connect_timeout?: int,
+     * fallback_api_url_trigger_count?: int,
      * } $options Optional. Client options.
      */
     public function __construct(string $username, ?string $token = null, array $options = [])
     {
-        $this->username = $username;
-        $this->token = $token;
-
-        if (!isset($options['apiUrl'])) {
-            return;
-        }
-
-        $this->url = $options['apiUrl'];
+        $this->options = array_merge($this->options, [
+            'token' => $token,
+            'username' => $username,
+        ], $options);
     }
 
     /**
@@ -261,17 +235,22 @@ final class Client
 
     public function getConnectTimeout(): int
     {
-        return $this->connect_timeout;
+        return $this->options['connect_timeout'];
     }
 
     public function setConnectTimeout(int $connect_timeout): void
     {
-        $this->connect_timeout = $connect_timeout;
+        $this->options['connect_timeout'] = $connect_timeout;
     }
 
-    public function getApiUrl(): string
+    /** @return string|array<string, string|int> */
+    public function getOptions(string $key)
     {
-        return $this->url;
+        if (isset($this->options[$key])) {
+            return $this->options[$key];
+        }
+
+        return $this->options;
     }
 
     /**
@@ -355,16 +334,16 @@ final class Client
         }
 
         // handle authentication
-        $params['username'] = $this->username;
+        $params['username'] = $this->options['username'];
 
-        if (!empty($this->token)) {
-            $params['token'] = $this->token;
+        if (!empty($this->options['token'])) {
+            $params['token'] = $this->options['token'];
         }
 
         // HttpClient arguments
         $HttpClient_args = [
-            'base_uri' => $this->url,
-            'connect_timeout' => $this->connect_timeout,
+            'base_uri' => $this->options['api_url'],
+            'connect_timeout' => $this->options['connect_timeout'],
             // @see https://curl.haxx.se/docs/caextract.html
             'verify' => __DIR__ . DIRECTORY_SEPARATOR . 'cacert.pem',
         ];
@@ -388,7 +367,7 @@ final class Client
 
         $uri = $endpoint . 'JSON?' . $query_string;
 
-        $this->lastUrlRequested = $this->url . '/' . $uri;
+        $this->lastUrlRequested = $this->options['api_url'] . '/' . $uri;
 
         // send GET request
         $response = $HttpClient->get($uri);

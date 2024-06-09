@@ -168,15 +168,13 @@ final class ClientTest extends TestCase
 
         $class = new ReflectionClass($g);
 
-        // get url protected property
-        $url_property = $class->getProperty('url');
-        $url_property->setAccessible(true);
-        $url_value = $url_property->getValue($g);
+        // get options protected property
+        $options_property = $class->getProperty('options');
+        $options_property->setAccessible(true);
+        $options_value = $options_property->getValue($g);
 
-        // get token protected property
-        $token_property = $class->getProperty('token');
-        $token_property->setAccessible(true);
-        $token_value = $token_property->getValue($g);
+        $url_value = $options_value['api_url'];
+        $token_value = $options_value['token'];
 
         $urlExpected = empty($token_value) ? sprintf(
             '%s/searchJSON?q=London&username=%s',
@@ -370,8 +368,8 @@ final class ClientTest extends TestCase
         $client = new GeoNamesClient(
             $this->config['username'],
             $this->config['token'],
-            ['apiUrl' => 'https://api.geonames.org']
+            ['api_url' => 'https://api.geonames.org']
         );
-        $this->assertEquals('https://api.geonames.org', $client->getApiUrl());
+        $this->assertEquals('https://api.geonames.org', $client->getOptions('api_url'));
     }
 }
