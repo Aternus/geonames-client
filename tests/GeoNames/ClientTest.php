@@ -21,7 +21,7 @@ final class ClientTest extends TestCase
     /** @var string $geonameId e.g. Israel */
     protected $geonameId = '294640';
 
-    /** @var string $country e.g. Israel in ISO-3166 format */
+    /** @var string $country Country code in ISO-3166 format e.g. Israel */
     protected $country = 'IL';
 
     /** @var float $lat e.g. Israel, Tel Aviv */
