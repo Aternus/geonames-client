@@ -107,7 +107,7 @@ class Client
     /**
      * Auth username.
      *
-     * @see http://www.geonames.org/commercial-webservices.html
+     * @see https://www.geonames.org/commercial-webservices.html
      *
      * @var string $username
      */
@@ -116,7 +116,7 @@ class Client
     /**
      * Auth token.
      *
-     * @see http://www.geonames.org/commercial-webservices.html
+     * @see https://www.geonames.org/commercial-webservices.html
      *
      * @var string $token
      */
@@ -127,7 +127,7 @@ class Client
      *
      * Note: Only JSON endpoints are supported.
      *
-     * @see http://www.geonames.org/export/ws-overview.html
+     * @see https://www.geonames.org/export/ws-overview.html
      *
      * @var array $endpoints
      */
@@ -188,7 +188,7 @@ class Client
      *
      * Creates a new GeoNames API Client instance.
      *
-     * @link http://www.geonames.org/
+     * @link https://www.geonames.org/
      *
      * @param string $username Required for both Free and Commercial users.
      * @param string|null $token Optional. Commercial users only.
@@ -347,7 +347,7 @@ class Client
      *
      * Escape values according to RFC 1738.
      *
-     * @see http://forum.geonames.org/gforum/posts/list/8.page
+     * @see https://forum.geonames.org/gforum/posts/list/8.page
      * @see rawurlencode()
      *
      * @param array $params Associative array of query parameters.
