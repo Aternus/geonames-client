@@ -7,6 +7,8 @@ while ! docker compose logs php7 | grep -m 1 "php7 has started"; do
     sleep 1
 done
 
+docker compose exec php7 composer validate --strict
+
 docker compose exec php7 composer aternus:style-fix
 
 docker compose exec php7 composer aternus:style-check
