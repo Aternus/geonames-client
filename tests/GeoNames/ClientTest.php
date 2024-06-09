@@ -372,4 +372,16 @@ final class ClientTest extends TestCase
         );
         $this->assertEquals('https://api.geonames.org', $client->getOptions('api_url'));
     }
+
+    public function testSetGetOptions(): void
+    {
+        $client = new GeoNamesClient(
+            $this->config['username'],
+            $this->config['token']
+        );
+
+        // override username
+        $client->setOptions(["username" => 'geonames_client_php_test']);
+        $this->assertEquals('geonames_client_php_test', $client->getOptions()['username']);
+    }
 }

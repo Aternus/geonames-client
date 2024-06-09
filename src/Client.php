@@ -155,13 +155,13 @@ final class Client
      * GeoNames Client Options
      *
      * @var array{
-     * username: string,
-     * token?: string,
-     * api_url?: string,
-     * fallback_api_url?: string,
-     * connect_timeout?: int,
-     * fallback_api_url_trigger_count?: int,
-     * } $options
+     *  username: string,
+     *  token: string,
+     *  api_url: string,
+     *  fallback_api_url: string,
+     *  connect_timeout: int,
+     *  fallback_api_url_trigger_count: int,
+     * }
      */
     protected $options = [
         'api_url' => 'https://secure.geonames.org/',
@@ -195,28 +195,28 @@ final class Client
      * @param string $username Required for both Free and Commercial users.
      * @param string|null $token Optional. Commercial users only.
      * @param array{
-     * username: string,
-     * token?: string,
-     * api_url?: string,
-     * fallback_api_url?: string,
-     * connect_timeout?: int,
-     * fallback_api_url_trigger_count?: int,
+     *  username?: string,
+     *  token?: string,
+     *  api_url?: string,
+     *  fallback_api_url?: string,
+     *  connect_timeout?: int,
+     *  fallback_api_url_trigger_count?: int,
      * } $options Optional. Client options.
      */
     public function __construct(string $username, ?string $token = null, array $options = [])
     {
-        $this->options = array_merge($this->options, [
+        $this->setOptions(array_merge([
             'token' => $token,
             'username' => $username,
-        ], $options);
+        ], $options));
     }
 
     /**
      * Returns an array of supported endpoints.
      *
-     * @see $endpoints
-     *
      * @return array<string>
+     *
+     * @see $endpoints
      */
     public function getSupportedEndpoints(): array
     {
@@ -235,22 +235,57 @@ final class Client
 
     public function getConnectTimeout(): int
     {
-        return $this->options['connect_timeout'];
+        return $this->getOptions('connect_timeout');
     }
 
     public function setConnectTimeout(int $connect_timeout): void
     {
-        $this->options['connect_timeout'] = $connect_timeout;
+        $this->setOptions([
+            "connect_timeout" => $connect_timeout,
+        ]);
     }
 
-    /** @return string|array<string, string|int> */
-    public function getOptions(string $key)
+    /**
+     * @return string|array{
+     *  username: string,
+     *  token: string,
+     *  api_url: string,
+     *  fallback_api_url: string,
+     *  connect_timeout: int,
+     *  fallback_api_url_trigger_count: int,
+     * }
+     */
+    public function getOptions(string $key = '')
     {
         if (isset($this->options[$key])) {
             return $this->options[$key];
         }
 
         return $this->options;
+    }
+
+    /**
+     * @param array{
+     *  username?: string,
+     *  token?: string,
+     *  api_url?: string,
+     *  fallback_api_url?: string,
+     *  connect_timeout?: int,
+     *  fallback_api_url_trigger_count?: int,
+     * } $options
+     *
+     * @return array{
+     *  username: string,
+     *  token: string,
+     *  api_url: string,
+     *  fallback_api_url: string,
+     *  connect_timeout: int,
+     *  fallback_api_url_trigger_count: int,
+     * }
+     */
+    public function setOptions(array $options): array
+    {
+        return $this->options = array_merge($this->options, $options);
     }
 
     /**
