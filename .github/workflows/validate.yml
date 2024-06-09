@@ -24,9 +24,31 @@ jobs:
         uses: WyriHaximus/github-action-composer-php-versions-in-range@v1
 
 
+  validate-user-permissions:
+    runs-on: ubuntu-latest
+    name: "Validate User Permissions"
+    steps:
+      - name: "Get user permissions"
+        id: userPermissions
+        uses: actions-cool/check-user-permission@v2
+        with:
+          require: "write"
+          username: ${{ github.triggering_actor }}
+      - name: "Check user permissions"
+        if: steps.userPermissions.outputs.check-result == 'false'
+        run: |
+          echo "${{ github.triggering_actor }} does not have 'write' permission on this repo."
+          echo "Originally triggered by ${{ github.actor }}"
+          exit 1
+      - name: "Audit: user permissions"
+        run: |
+          echo "Audit: Execution by ${{ github.triggering_actor }} with ${{ steps.userPermissions.outputs.user-permission }} permissions"
+
+
   lint:
     needs:
       - get-php-info
+      - validate-user-permissions
     name: "Lint"
     uses: "./.github/workflows/shared-lint.yml"
     with:
@@ -38,6 +60,7 @@ jobs:
   test:
     needs:
       - get-php-info
+      - validate-user-permissions
       - lint
     name: "Test"
     uses: "./.github/workflows/shared-test.yml"
