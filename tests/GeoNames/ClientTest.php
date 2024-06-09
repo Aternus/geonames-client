@@ -34,8 +34,8 @@ final class ClientTest extends TestCase
     public function setUp(): void
     {
         $this->config = [
-            'token' => getenv('GEONAMES_TOKEN') ?? '',
-            'username' => getenv('GEONAMES_USERNAME') ?? '',
+            'token' => getenv('GEONAMES_TOKEN') ?: '',
+            'username' => getenv('GEONAMES_USERNAME') ?: '',
         ];
         $this->client = new GeoNamesClient($this->config['username'], $this->config['token']);
     }
