@@ -47,10 +47,27 @@ $country_languages = $country->languages;
 
 ## Client Options
 
-### Change API URL
+Supported client options:
+
+1. `username`: GeoNames username.
+2. `token`?: GeoNames token (i.e. premium user key).
+3. `api_url`?: URL of the GeoNames web service.
+4. `connect_timeout`?: HTTP Client connection timeout. The number of seconds to
+   wait while trying to connect to a server (default `0`, wait indefinitely).
+5. `fallback_api_url`: COMING SOON.
+6. `fallback_api_url_trigger_count`: COMING SOON.
+
+### Example: Providing options during instantiation
 
 ```php
-$g = new GeoNamesClient('username', null, ['apiUrl' => 'https://custom-premium.geonames.org']);
+$g = new GeoNamesClient('username', '', ['api_url' => 'https://custom-premium.geonames.org']);
+```
+
+### Example: Changing options during runtime
+
+```php
+$g = new GeoNamesClient('username');
+$g->setOptions(['api_url' => 'https://custom-premium.geonames.org'])
 ```
 
 ## Why?
