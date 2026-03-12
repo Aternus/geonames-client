@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+docker compose down --remove-orphans
+
 docker compose up -d php7
 
 while ! docker compose logs php7 | grep -m 1 "php7 has started"; do
