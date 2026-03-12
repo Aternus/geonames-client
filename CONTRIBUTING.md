@@ -1,7 +1,8 @@
 # Welcome to GeoNames Client contributing guide <!-- omit in toc -->
 
-Thank you for investing your time in contributing to our project! Any
-contribution you make will be reflected
+Thank you for showing interest in contributing to our project!
+
+Any contribution you make will be reflected
 on [geonames-client](https://packagist.org/packages/aternus/geonames-client)
 :sparkles:.
 
@@ -10,12 +11,13 @@ an issue, creating a PR, reviewing, and merging the PR.
 
 Use the table of contents icon
 <img alt="Table of contents icon" src="https://raw.githubusercontent.com/github/docs/aca38f817073690d281ae609bc963832027751d1/contributing/images/table-of-contents.png" width="25" height="25" />
-in the top left corner of this document to get to a specific section of this
+in the top right corner of this document to get to a specific section of this
 guide quickly.
 
 ## New contributor guide
 
 To get an overview of the project, read the [README](README.md) file.
+
 Here are some resources to help you get started with open source contributions:
 
 - [Finding ways to contribute to open source on GitHub](https://docs.github.com/en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github)

@@ -22,7 +22,7 @@ jobs:
     runs-on: ${{ inputs.operating-system }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.sha || github.sha }} # must validate user permissions PRIOR to checkout ⚠️
       - name: "Setup PHP"
