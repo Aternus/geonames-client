@@ -13,11 +13,11 @@ use Throwable;
 
 final class ClientTest extends TestCase
 {
-    /** @var GeoNamesClient $client */
+    /** @var GeoNamesClient */
     protected $client;
 
     /** @var array<string, string>|null */
-    protected $config;
+    protected $config = null;
 
     /** @var string $geonameId e.g. Israel */
     protected $geonameId = '294640';

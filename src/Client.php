@@ -275,14 +275,14 @@ class Client
      *  connect_timeout?: int,
      * } $options
      *
-     * @throws InvalidArgumentException When any option is invalid.
-     *
      * @return array{
      *  username: string,
      *  token: string,
      *  api_url: string,
      *  connect_timeout: int,
      * }
+     *
+     * @throws InvalidArgumentException When any option is invalid.
      */
     public function setOptions(array $options): array
     {
