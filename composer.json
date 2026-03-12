@@ -63,6 +63,6 @@
     "ext-xdebug": "*",
     "squizlabs/php_codesniffer": "3.*",
     "phpunit/phpunit": "8.*",
-    "slevomat/coding-standard": "^8.15"
+    "slevomat/coding-standard": "8.*"
   }
 }

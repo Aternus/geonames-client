@@ -1,0 +1,10 @@
+/.git* export-ignore
+/infra export-ignore
+/tests export-ignore
+.editorconfig export-ignore
+.sample.development.env export-ignore
+AGENTS.md export-ignore
+docker-compose.yml export-ignore
+phpcs.xml export-ignore
+phpunit.xml export-ignore
+run-prepush.sh export-ignore
