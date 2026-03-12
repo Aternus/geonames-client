@@ -31,7 +31,7 @@ jobs:
     name: "PHP ${{ matrix.php }} on ${{ matrix.os }}"
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.sha || github.sha }} # must validate user permissions PRIOR to checkout ⚠️
       - name: "Setup PHP"
@@ -41,7 +41,7 @@ jobs:
           extensions: ${{ join(fromJson(inputs.php-extensions), ',') }}
       - name: "Composer: Cache packages"
         id: composer-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: vendor
           key: ${{ matrix.os }}-php-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
